@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="gis-logo.png">
+<title>GIS — Groupe Intervention Sécurité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090B;
+  --bg-2:#0C0E12;
+  --panel:#101319;
+  --panel-2:#141821;
+  --line:rgba(255,255,255,.07);
+  --line-gold:rgba(201,161,78,.35);
+  --gold:#C9A14E;
+  --gold-bright:#E6C887;
+  --red:#E03131;
+  --red-glow:rgba(224,49,49,.45);
+  --text:#EEEDE8;
+  --muted:#A7ACB5;
+  --mono:'IBM Plex Mono',monospace;
+  --display:'Bebas Neue',sans-serif;
+  --body:'Source Sans 3',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--gold);color:#08090B}
+
+/* ---------- grain + atmosphere ---------- */
+body::before{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ---------- scroll progress ---------- */
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-bright));z-index:100;transition:width .1s linear}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  background:rgba(8,9,11,0);
+  border-bottom:1px solid transparent;
+  transition:background .3s ease,border-color .3s ease,padding .3s ease;
+}
+nav.scrolled{background:rgba(8,9,11,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 48px}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text)}
+.logo-mark{
+  width:42px;height:42px;border:1px solid var(--gold);display:grid;place-items:center;
+  font-family:var(--display);font-size:19px;letter-spacing:1px;color:var(--gold);
+  position:relative;flex-shrink:0;
+}
+.logo-mark::after{content:"";position:absolute;inset:3px;border:1px solid rgba(201,161,78,.25)}
+.logo-mark-img{height:46px;width:auto;display:block;flex-shrink:0;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
+.foot-logo{height:40px}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-text b{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:2.5px}
+.logo-text span{font-family:var(--mono);font-size:9px;letter-spacing:2.2px;color:var(--muted);text-transform:uppercase}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:13.5px;letter-spacing:1.6px;text-transform:uppercase;
+  font-weight:600;transition:color .2s;position:relative;
+}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .25s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;border:1px solid var(--line-gold);padding:11px 22px;
+  transition:background .25s,color .25s;cursor:pointer;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--gold);color:#08090B}
+
+/* ---------- hero ---------- */
+header{
+  min-height:100vh;position:relative;display:flex;align-items:center;
+  padding:140px 48px 80px;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 20%,rgba(201,161,78,.06),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 90%,rgba(224,49,49,.04),transparent 60%),
+    var(--bg);
+  overflow:hidden;
+}
+header::before{
+  content:"";position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 90% 80% at 60% 40%,#000 30%,transparent 75%);
+}
+.hero-inner{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.15fr .85fr;gap:80px;align-items:center;position:relative;z-index:2}
+.kicker{
+  font-family:var(--mono);font-size:12px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:28px;
+}
+.kicker::before{content:"";width:36px;height:1px;background:var(--gold)}
+h1{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(56px,7.2vw,104px);line-height:.96;letter-spacing:1px;
+  text-transform:uppercase;
+}
+h1 .accent{color:var(--gold)}
+.hero-sub{margin-top:30px;font-size:19px;font-weight:300;color:var(--muted);max-width:520px}
+.hero-sub b{color:var(--text);font-weight:600}
+.hero-actions{display:flex;gap:18px;margin-top:44px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer;
+  font-family:var(--mono);font-size:13px;letter-spacing:2px;text-transform:uppercase;
+  padding:17px 32px;transition:all .25s;border:1px solid transparent;
+}
+.btn-gold{background:var(--gold);color:#08090B;font-weight:500}
+.btn-gold:hover{background:var(--gold-bright)}
+.btn-ghost{border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn svg{width:15px;height:15px}
+
+/* hero stats */
+.hero-stats{display:flex;gap:0;margin-top:64px;border-top:1px solid var(--line)}
+.hstat{padding:24px 36px 0 0;margin-right:36px;border-right:1px solid var(--line)}
+.hstat:last-child{border-right:none}
+.hstat .num{font-family:var(--display);font-size:42px;color:var(--text);line-height:1}
+.hstat .num span{color:var(--gold);font-size:26px}
+.hstat .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* ---------- console (hero right) ---------- */
+.console{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);position:relative;padding:36px;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.8);
+}
+.console::before{content:"";position:absolute;top:-1px;left:-1px;width:34px;height:34px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.console::after{content:"";position:absolute;bottom:-1px;right:-1px;width:34px;height:34px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.console-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.live{display:flex;align-items:center;gap:8px;color:var(--gold)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.sos-wrap{display:grid;place-items:center;padding:18px 0 34px;position:relative}
+.sos{
+  width:148px;height:148px;border-radius:50%;position:relative;cursor:pointer;border:none;
+  background:radial-gradient(circle at 35% 30%,#FF5252,var(--red) 60%,#9E1E1E);
+  box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 18px 50px -8px var(--red-glow);
+  display:grid;place-items:center;
+}
+.sos span{font-family:var(--display);font-size:25px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.ring{position:absolute;border:1px solid var(--red);border-radius:50%;width:148px;height:148px;animation:pulse 2.6s ease-out infinite;pointer-events:none}
+.ring:nth-child(2){animation-delay:.85s}
+.ring:nth-child(3){animation-delay:1.7s}
+@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.05);opacity:0}}
+.console-rows{border-top:1px solid var(--line)}
+.crow{display:flex;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:1px}
+.crow .k{color:var(--muted);text-transform:uppercase;font-size:10.5px;letter-spacing:1.8px;padding-top:2px}
+.crow .v{color:var(--text);text-align:right}
+.crow .v.gold{color:var(--gold)}
+.crow .v.ok{color:#6FCF8E}
+
+/* ---------- sections communes ---------- */
+section{padding:130px 48px;position:relative}
+.wrap{max-width:1280px;margin:0 auto}
+.sec-tag{
+  font-family:var(--mono);font-size:12px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin-bottom:24px;
+}
+.sec-tag::before{content:"";width:36px;height:1px;background:var(--gold)}
+h2{
+  font-family:var(--display);font-weight:400;font-size:clamp(40px,4.6vw,64px);
+  line-height:1;letter-spacing:1px;text-transform:uppercase;max-width:780px;
+}
+h2 .accent{color:var(--gold)}
+.sec-intro{margin-top:24px;color:var(--muted);font-size:18px;font-weight:300;max-width:640px}
+.sec-intro b{color:var(--text);font-weight:600}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal:nth-child(2){transition-delay:.08s}
+.reveal:nth-child(3){transition-delay:.16s}
+.reveal:nth-child(4){transition-delay:.24s}
+
+/* ---------- mission ---------- */
+#mission{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:20px}
+.mission-points{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.mpoint{display:flex;gap:24px;padding:30px 0;border-bottom:1px solid var(--line)}
+.mpoint .n{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:2px;padding-top:5px;flex-shrink:0}
+.mpoint h3{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:1.5px;margin-bottom:8px}
+.mpoint p{color:var(--muted);font-size:15.5px}
+
+/* ---------- dispositif ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:70px}
+.step{background:var(--panel);padding:44px 34px 48px;position:relative;transition:background .3s}
+.step:hover{background:var(--panel-2)}
+.step .s-num{font-family:var(--display);font-size:64px;color:transparent;-webkit-text-stroke:1px rgba(201,161,78,.5);line-height:1}
+.step svg{width:30px;height:30px;stroke:var(--gold);margin:28px 0 18px}
+.step h3{font-family:var(--display);font-weight:400;font-size:25px;letter-spacing:1.5px;margin-bottom:10px}
+.step p{color:var(--muted);font-size:15px}
+.step::after{
+  content:"";position:absolute;top:50%;right:-13px;width:24px;height:1px;background:var(--gold);z-index:3;display:block;
+}
+.step:last-child::after{display:none}
+
+/* ---------- unités ---------- */
+.unites-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center;margin-top:20px}
+.unit-visual{
+  position:relative;aspect-ratio:4/4.6;background:
+    radial-gradient(ellipse at 50% 30%,rgba(201,161,78,.08),transparent 60%),
+    linear-gradient(160deg,#12151C,#0A0C10);
+  border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;
+}
+.unit-visual::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+.unit-visual svg{width:54%;position:relative;z-index:2}
+.unit-visual .uv-tag{
+  position:absolute;bottom:22px;left:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:2px;
+  color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px;
+}
+.unit-visual .uv-tag i{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.creds{display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:36px}
+.cred{display:flex;align-items:flex-start;gap:22px;padding:26px 0;border-bottom:1px solid var(--line)}
+.cred svg{width:26px;height:26px;stroke:var(--gold);flex-shrink:0;margin-top:3px}
+.cred h3{font-family:var(--display);font-weight:400;font-size:23px;letter-spacing:1.5px}
+.cred p{color:var(--muted);font-size:15.5px;margin-top:4px}
+
+/* ---------- services ---------- */
+#services{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:70px}
+.svc{background:var(--panel);padding:38px 32px;transition:background .3s}
+.svc:hover{background:var(--panel-2)}
+.svc svg{width:28px;height:28px;stroke:var(--gold);margin-bottom:18px}
+.svc h3{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:1.5px;margin-bottom:8px}
+.svc p{color:var(--muted);font-size:15px}
+
+/* ---------- flotte ---------- */
+.fleet-head{margin-top:80px}
+.fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px}
+.fstat{background:var(--panel);padding:30px 28px}
+.fstat .num{font-family:var(--display);font-size:56px;line-height:1;color:var(--text)}
+.fstat .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+/* ---------- pour qui ---------- */
+#pourqui{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:70px}
+.pq-card{border:1px solid var(--line);background:var(--panel);padding:36px 32px;transition:border-color .3s}
+.pq-card:hover{border-color:var(--line-gold)}
+.pq-card svg{width:28px;height:28px;stroke:var(--gold);margin-bottom:18px}
+.pq-card h3{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:1.5px;margin-bottom:8px}
+.pq-card p{color:var(--muted);font-size:15px}
+
+/* ---------- conformité ---------- */
+#conformite{background:var(--bg-2);border-top:1px solid var(--line)}
+.conf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:64px}
+.conf{border:1px solid var(--line);background:var(--panel);padding:34px 30px}
+.conf svg{width:26px;height:26px;stroke:var(--gold);margin-bottom:16px}
+.conf h3{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:1.5px;margin-bottom:8px}
+.conf p{color:var(--muted);font-size:14.5px}
+
+.store-line{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;color:var(--gold);text-transform:uppercase;border-top:1px solid var(--line);padding-top:18px}
+
+/* ---------- offre ---------- */
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:70px}
+.offer-card{
+  background:var(--panel);border:1px solid var(--line);padding:44px 38px;position:relative;
+  transition:border-color .3s,transform .3s;display:flex;flex-direction:column;
+}
+.offer-card:hover{border-color:var(--line-gold)}
+.offer-card.featured{border-color:var(--gold);background:linear-gradient(170deg,rgba(201,161,78,.08),var(--panel) 55%)}
+.offer-card .o-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.offer-card h3{font-family:var(--display);font-weight:400;font-size:30px;letter-spacing:1.5px;line-height:1.05}
+.price{font-family:var(--display);font-size:74px;line-height:1;margin:26px 0 6px;color:var(--text)}
+.price small{font-size:26px;color:var(--gold)}
+.offer-card ul{list-style:none;margin-top:26px;display:flex;flex-direction:column;gap:13px;flex-grow:1}
+.offer-card li{display:flex;gap:12px;color:var(--muted);font-size:15.5px;align-items:flex-start}
+.offer-card li svg{width:16px;height:16px;stroke:var(--gold);flex-shrink:0;margin-top:4px}
+.offer-card .btn{margin-top:36px;justify-content:center}
+
+/* ---------- déploiement ---------- */
+#deploiement{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.deploy-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:20px}
+.city-list{border-top:1px solid var(--line);margin-top:10px}
+.city{display:flex;align-items:center;justify-content:space-between;padding:30px 6px;border-bottom:1px solid var(--line);transition:background .25s;gap:18px}
+.city:hover{background:rgba(255,255,255,.015)}
+.city .c-name{font-family:var(--display);font-weight:400;font-size:36px;letter-spacing:2px;display:flex;align-items:center;gap:18px}
+.city .c-name i{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);flex-shrink:0}
+.city.soon .c-name i{background:transparent;border:1px solid var(--muted);box-shadow:none}
+.city.soon .c-name{color:var(--muted)}
+.city .c-status{font-family:var(--mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid var(--line-gold);padding:7px 14px;white-space:nowrap}
+.city.soon .c-status{color:var(--muted);border-color:var(--line)}
+.map-panel{
+  position:relative;border:1px solid var(--line);overflow:hidden;padding:28px 20px 56px;
+  background:radial-gradient(ellipse at 45% 40%,rgba(201,161,78,.05),transparent 65%),var(--panel);
+}
+.map-panel::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.map-panel svg{position:relative;z-index:2;width:100%;height:auto;display:block}
+.fr-outline{fill:rgba(201,161,78,.03);stroke:rgba(201,161,78,.45);stroke-width:1.5;stroke-linejoin:round}
+.route{stroke:var(--gold);stroke-width:1.5;stroke-dasharray:6 6;opacity:.85;animation:routeDash 1.6s linear infinite}
+@keyframes routeDash{to{stroke-dashoffset:-24}}
+.c-dot{fill:var(--gold)}
+.c-ring{fill:none;stroke:rgba(201,161,78,.55);stroke-width:1;animation:cityPulse 2.4s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes cityPulse{0%{transform:scale(.5);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+.c-dot.pending{fill:#15181F;stroke:var(--muted);stroke-width:1.5}
+.c-label{font-family:var(--mono);font-size:16px;letter-spacing:2.5px;fill:var(--text)}
+.c-label.pending{fill:var(--muted)}
+.map-legend{
+  position:absolute;bottom:16px;left:22px;right:22px;display:flex;gap:26px;flex-wrap:wrap;z-index:3;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);
+}
+.map-legend span{display:flex;align-items:center;gap:9px}
+.map-legend i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.map-legend .l-on{background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.map-legend .l-off{border:1px solid var(--muted)}
+
+/* ---------- objectifs ---------- */
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:84px;position:relative}
+.timeline::before{content:"";position:absolute;top:7px;left:8px;right:8px;height:1px;background:linear-gradient(90deg,var(--gold) 0%,var(--line-gold) 55%,var(--line) 100%)}
+.horizon{position:relative;padding-top:44px}
+.h-marker{position:absolute;top:0;left:0;width:15px;height:15px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.horizon:nth-child(2) .h-marker{background:var(--bg);border:2px solid var(--gold);box-shadow:none}
+.horizon:nth-child(3) .h-marker{background:var(--bg);border:1px solid var(--muted)}
+.h-phase{font-family:var(--mono);font-size:10.5px;letter-spacing:2.4px;color:var(--gold);text-transform:uppercase}
+.horizon:nth-child(3) .h-phase{color:var(--muted)}
+.h-term{font-family:var(--display);font-weight:400;font-size:34px;letter-spacing:1.5px;margin-top:6px}
+.h-slots{margin-top:24px;border:1px dashed var(--line-gold);background:rgba(201,161,78,.02);padding:24px;list-style:none;position:relative}
+.h-slots::before{
+  content:"À remplir";position:absolute;top:-10px;left:20px;background:var(--bg);padding:2px 12px;
+  font-family:var(--mono);font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);
+}
+.h-slots li{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:14px 0;border-bottom:1px dashed var(--line);display:flex;gap:12px;align-items:center}
+.h-slots li::before{content:"";width:5px;height:5px;border:1px solid var(--muted);flex-shrink:0}
+.h-slots li:last-child{border-bottom:none}
+
+/* ---------- fondateur ---------- */
+.founder-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:center;margin-top:20px}
+.founder-visual{
+  position:relative;aspect-ratio:4/4.8;border:1px solid var(--line);overflow:hidden;
+  background:radial-gradient(ellipse at 50% 25%,rgba(201,161,78,.09),transparent 60%),linear-gradient(165deg,#12151C,#0A0C10);
+  display:grid;place-items:center;
+}
+.founder-visual svg{width:42%;position:relative;z-index:2}
+.founder-visual .fv-tag{position:absolute;bottom:22px;left:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+blockquote{
+  font-size:25px;font-weight:300;line-height:1.55;color:var(--text);margin-top:36px;position:relative;padding-left:34px;
+  border-left:2px solid var(--gold);
+}
+blockquote b{font-weight:600;color:var(--gold-bright)}
+.founder-id{margin-top:36px;display:flex;align-items:center;gap:20px}
+.founder-id .f-mark{width:52px;height:52px;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:21px;color:var(--gold)}
+.founder-id .f-name{font-family:var(--display);font-size:24px;letter-spacing:2px}
+.founder-id .f-role{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+
+/* ---------- annexe (pistes en réflexion) ---------- */
+#annexe{background:var(--bg-2);border-top:1px solid var(--line)}
+.annexe-head{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap}
+.stamp{
+  font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);
+  border:1px dashed var(--line-gold);padding:12px 20px;transform:rotate(2deg);white-space:nowrap;flex-shrink:0;
+}
+.idea-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:70px}
+.idea-card{
+  border:1px dashed var(--line-gold);background:rgba(201,161,78,.02);padding:40px 34px;
+  position:relative;transition:background .3s,border-color .3s;
+}
+.idea-card:hover{background:rgba(201,161,78,.05)}
+.idea-card .wip{
+  position:absolute;top:-11px;left:28px;background:var(--bg-2);padding:2px 12px;
+  font-family:var(--mono);font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);
+}
+.idea-card svg{width:30px;height:30px;stroke:var(--gold);margin-bottom:20px}
+.idea-card h3{font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:1.5px;line-height:1.05;margin-bottom:12px}
+.idea-card p{color:var(--muted);font-size:15.5px}
+.idea-card .note{
+  margin-top:20px;padding-top:16px;border-top:1px dashed var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);
+  display:flex;gap:10px;align-items:flex-start;
+}
+.idea-card .note svg{width:13px;height:13px;margin:2px 0 0;flex-shrink:0}
+
+/* ---------- investisseurs ---------- */
+#investisseurs{
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 110%,rgba(201,161,78,.10),transparent 65%),
+    var(--bg);
+  border-top:1px solid var(--line);text-align:center;padding:160px 48px;
+}
+#investisseurs .sec-tag{justify-content:center}
+#investisseurs .sec-tag::after{content:"";width:36px;height:1px;background:var(--gold)}
+#investisseurs h2{margin:0 auto;max-width:900px}
+#investisseurs .sec-intro{margin:28px auto 0}
+.invest-points{display:flex;justify-content:center;gap:0;margin:64px auto 0;max-width:980px;border:1px solid var(--line);background:var(--line);gap:1px}
+.ipoint{background:var(--panel);padding:38px 40px;flex:1}
+.ipoint .num{font-family:var(--display);font-size:44px;color:var(--gold)}
+.ipoint p{font-family:var(--mono);font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.invest-cta{margin-top:64px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.confidential{
+  margin-top:70px;font-family:var(--mono);font-size:10.5px;letter-spacing:2.5px;color:var(--muted);
+  text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.confidential svg{width:13px;height:13px;stroke:var(--gold)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:44px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+footer .f-left{display:flex;align-items:center;gap:14px}
+footer .f-left .logo-mark{width:34px;height:34px;font-size:15px}
+footer p{font-family:var(--mono);font-size:11px;letter-spacing:1.8px;color:var(--muted);text-transform:uppercase}
+.f-slogan{color:var(--gold)!important;font-size:9.5px!important;margin-top:4px}
+.f-contact{display:flex;gap:26px;flex-wrap:wrap}
+.f-contact a{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.f-contact a:hover{color:var(--gold)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1080px){
+  .hero-inner{grid-template-columns:1fr;gap:60px}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .step::after{display:none}
+  .mission-grid,.unites-grid,.deploy-grid,.founder-grid{grid-template-columns:1fr;gap:56px}
+  .timeline{grid-template-columns:1fr;gap:48px}
+  .timeline::before{display:none}
+  .offer-grid{grid-template-columns:1fr;max-width:560px}
+  .idea-grid{grid-template-columns:1fr;max-width:560px}
+  .svc-grid,.pq-grid{grid-template-columns:repeat(2,1fr)}
+  .fleet{grid-template-columns:repeat(2,1fr)}
+  .conf-grid{grid-template-columns:1fr;max-width:560px}
+  .invest-points{flex-direction:column}
+  .nav-links{display:none}
+}
+@media(max-width:640px){
+  nav,nav.scrolled{padding:14px 18px}
+  .logo-text{display:none}
+  .nav-cta{font-size:10px;padding:9px 12px;letter-spacing:1.2px}
+  .steps{grid-template-columns:1fr}
+  .step{padding:36px 28px 40px}
+  header{padding:130px 22px 60px}
+  section{padding:90px 22px}
+  .hero-stats{flex-wrap:wrap;gap:0}
+  .hstat{padding:20px 22px 0 0;margin-right:22px}
+  .city .c-name{font-size:26px}
+  .console{padding:26px 20px}
+  .c-label{font-size:20px}
+  .city{flex-wrap:wrap}
+  .svc-grid,.pq-grid{grid-template-columns:1fr}
+  .annexe-head{flex-direction:column;gap:24px}
+  .stamp{white-space:normal;transform:none;font-size:10px;padding:10px 14px;letter-spacing:1.8px;flex-shrink:1;max-width:100%;align-self:flex-start}
+  footer{padding:36px 22px;flex-direction:column;align-items:flex-start;text-align:left}
+  .f-contact{gap:14px 20px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav id="nav">
+  <a class="logo" href="#top">
+    <img class="logo-mark-img" src="gis-logo.png" alt="GIS">
+    <span class="logo-text">
+      <b>G.I.S</b>
+      <span>Groupe Intervention Sécurité</span>
+    </span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pourqui">Pour qui ?</a></li>
+    <li><a href="#offre">Offre</a></li>
+    <li><a href="#deploiement">Déploiement</a></li>
+    <li><a href="#fondateur">Fondateur</a></li>
+  </ul>
+  <a class="nav-cta" href="#investisseurs">Espace investisseurs</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="kicker">Protéger — Intervenir — Sécuriser</div>
+      <h1>La protection<br>n'attend <span class="accent">pas.</span></h1>
+      <p class="hero-sub">GIS déploie des <b>unités motorisées de protection rapprochée</b> au cœur des grandes villes, 24h/24 et 7j/7. <b>Une présence, une réponse, une protection.</b></p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#dispositif">
+          Découvrir le dispositif
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#investisseurs">Espace investisseurs</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="num" data-count="24">0<span>/7</span></div><div class="lbl">Intervention rapide</div></div>
+        <div class="hstat"><div class="num" data-count="20">0</div><div class="lbl">Agents en rotation</div></div>
+        <div class="hstat"><div class="num" data-count="10">0</div><div class="lbl">Motos BMW en duo</div></div>
+        <div class="hstat"><div class="num" data-count="30">0<span>€/h</span></div><div class="lbl">À partir de</div></div>
+      </div>
+    </div>
+
+    <div class="console">
+      <div class="console-head">
+        <span>Console d'alerte</span>
+        <span class="live"><i></i>Opérationnel</span>
+      </div>
+      <div class="sos-wrap">
+        <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+        <button class="sos" type="button" aria-label="Bouton d'intervention (démonstration)"><span>Intervention</span></button>
+      </div>
+      <div class="console-rows">
+        <div class="crow"><span class="k">Position</span><span class="v">Verrouillée — temps réel</span></div>
+        <div class="crow"><span class="k">Unité assignée</span><span class="v gold">GIS-07 — Paris</span></div>
+        <div class="crow"><span class="k">Équipage</span><span class="v">2 agents — ex-militaires</span></div>
+        <div class="crow"><span class="k">Appui aérien</span><span class="v">Drone — levée de doute</span></div>
+        <div class="crow"><span class="k">Statut</span><span class="v ok">En approche</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MISSION ============ -->
+<section id="mission">
+  <div class="wrap">
+    <div class="sec-tag reveal">01 — La mission</div>
+    <div class="mission-grid">
+      <div>
+        <h2 class="reveal">Une nouvelle réponse à <span class="accent">l'insécurité urbaine</span></h2>
+        <p class="sec-intro reveal"><b>Trop d'agressions. Agissons ensemble.</b> Agression, harcèlement de rue, trajet à risque, situation menaçante : entre l'appel et l'arrivée des secours, <b>chaque minute compte</b>. GIS comble ce vide avec une protection privée, mobile et géolocalisée — pensée pour intervenir là où la circulation bloque tout le monde, sauf une moto.</p>
+      </div>
+      <div class="mission-points">
+        <div class="mpoint reveal">
+          <span class="n">/01</span>
+          <div><h3>Présence immédiate</h3><p>Des unités en patrouille au cœur des villes, prêtes à converger vers le point d'alerte.</p></div>
+        </div>
+        <div class="mpoint reveal">
+          <span class="n">/02</span>
+          <div><h3>Mobilité absolue</h3><p>La moto s'affranchit du trafic urbain : l'intervention arrive là où une voiture ne passe plus.</p></div>
+        </div>
+        <div class="mpoint reveal">
+          <span class="n">/03</span>
+          <div><h3>Dissuasion maîtrisée</h3><p>Deux agents expérimentés, tenue noire, moto noire : une présence qui calme la situation par elle-même.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DISPOSITIF ============ -->
+<section id="dispositif">
+  <div class="wrap">
+    <div class="sec-tag reveal">02 — Le dispositif</div>
+    <h2 class="reveal">Quatre temps. <span class="accent">Une intervention.</span></h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="s-num">01</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg>
+        <h3>L'alerte</h3>
+        <p>Le client déclenche le bouton d'intervention depuis son téléphone, ou réserve son créneau à l'avance.</p>
+      </div>
+      <div class="step reveal">
+        <div class="s-num">02</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <h3>La géolocalisation</h3>
+        <p>Sa position est transmise en temps réel à l'unité disponible la plus proche du point d'alerte.</p>
+      </div>
+      <div class="step reveal">
+        <div class="s-num">03</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg>
+        <h3>Le déploiement</h3>
+        <p>Une moto noire, deux agents : l'unité trace vers le client en s'affranchissant du trafic.</p>
+      </div>
+      <div class="step reveal">
+        <div class="s-num">04</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg>
+        <h3>La protection</h3>
+        <p>Protection rapprochée assurée sur place et jusqu'à la mise en sécurité complète du client.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-tag reveal">03 — Les services</div>
+    <h2 class="reveal">Tout ce que GIS <span class="accent">sait faire.</span></h2>
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        <h3>Intervention rapide 24h/24 — 7j/7</h3>
+        <p>Des unités opérationnelles à toute heure, prêtes à converger vers le point d'alerte.</p>
+      </div>
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <h3>Géolocalisation en temps réel</h3>
+        <p>Position du client et des unités suivie en continu, de l'alerte à la mise en sécurité.</p>
+      </div>
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+        <h3>Alarme &amp; levée de doute</h3>
+        <p>Déclenchement d'alarme et vérification sur place avant toute escalade.</p>
+      </div>
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+        <h3>Surveillance aérienne par drone</h3>
+        <p>Appui aérien pour la levée de doute et le suivi de situation en temps réel.</p>
+      </div>
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2.5" y="7" width="15" height="10" rx="2"/><circle cx="10" cy="12" r="3"/><path d="M17.5 10.5 21.5 8v8l-4-2.5"/></svg>
+        <h3>Caméra embarquée</h3>
+        <p>Sur tous les agents, enregistrement vidéo en temps réel : transparence, preuve légale, sécurité optimale.</p>
+      </div>
+      <div class="svc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <h3>Discrétion &amp; efficacité</h3>
+        <p>Une présence qui protège sans s'imposer — et qui dissuade par elle-même.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UNITÉS ============ -->
+<section id="unites">
+  <div class="wrap">
+    <div class="unites-grid">
+      <div class="unit-visual reveal">
+        <svg viewBox="0 0 200 240" fill="none">
+          <path d="M100 18 38 44v52c0 56 26 96 62 122 36-26 62-66 62-122V44L100 18Z" stroke="#C9A14E" stroke-width="2"/>
+          <path d="M100 34 52 54v42c0 46 21 79 48 100 27-21 48-54 48-100V54l-48-20Z" stroke="rgba(201,161,78,.35)" stroke-width="1.5"/>
+          <text x="100" y="118" text-anchor="middle" font-family="Bebas Neue" font-size="44" fill="#EEEDE8" letter-spacing="4">GIS</text>
+          <line x1="68" y1="136" x2="132" y2="136" stroke="#C9A14E" stroke-width="1.5"/>
+          <text x="100" y="156" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#A7ACB5" letter-spacing="3">INTERVENTION</text>
+        </svg>
+        <span class="uv-tag"><i></i>Unité type — 2 agents</span>
+      </div>
+      <div>
+        <div class="sec-tag reveal">04 — Les unités</div>
+        <h2 class="reveal">Des hommes <span class="accent">d'expérience.</span></h2>
+        <p class="sec-intro reveal">Chaque moto embarque un binôme aguerri, recruté pour son sang-froid et son vécu opérationnel.</p>
+        <div class="creds">
+          <div class="cred reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/></svg>
+            <div><h3>Anciens militaires &amp; anciens combattants</h3><p>Discipline, expérience, loyauté, professionnalisme : des profils formés à la gestion de crise et à la maîtrise de la force.</p></div>
+          </div>
+          <div class="cred reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/><path d="M4 21c0-3.5 3.6-6 8-6s8 2.5 8 6"/></svg>
+            <div><h3>Binôme systématique</h3><p>Deux agents par moto : un pilote, un protecteur. Jamais d'intervention en solitaire.</p></div>
+          </div>
+          <div class="cred reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m12 3 2.7 5.6 6.3.8-4.6 4.3 1.2 6.1L12 16.9l-5.6 2.9 1.2-6.1L3 9.4l6.3-.8L12 3Z"/></svg>
+            <div><h3>Bien payés, bien équipés</h3><p>Des agents motivés, rémunérés et équipés au meilleur niveau — pour vous protéger.</p></div>
+          </div>
+          <div class="cred reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 17h18M5 17l2.2-8h9.6L19 17M9 9V6h6v3"/></svg>
+            <div><h3>Identité visuelle unique</h3><p>Tenue noire, moto noire : une signature immédiatement reconnaissable, qui impose le calme.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sec-tag fleet-head reveal">La flotte</div>
+    <div class="fleet">
+      <div class="fstat reveal"><div class="num">10</div><div class="lbl">Motos BMW en duo — 20 agents</div></div>
+      <div class="fstat reveal"><div class="num">20</div><div class="lbl">Agents en rotation</div></div>
+      <div class="fstat reveal"><div class="num">1</div><div class="lbl">Quad tout-terrain</div></div>
+      <div class="fstat reveal"><div class="num">1</div><div class="lbl">Drone — surveillance &amp; levée de doute</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POUR QUI ============ -->
+<section id="pourqui">
+  <div class="wrap">
+    <div class="sec-tag reveal">05 — Pour qui ?</div>
+    <h2 class="reveal">Une protection pour <span class="accent">chacun.</span></h2>
+    <div class="pq-grid">
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m4 11 8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-6h4v6"/></svg>
+        <h3>Particuliers</h3>
+        <p>Protection du domicile, des trajets et des situations du quotidien.</p>
+      </div>
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="M12 8.5c-1.2-1.4-3.5-.8-3.5 1.2 0 1.6 2 3 3.5 4 1.5-1 3.5-2.4 3.5-4 0-2-2.3-2.6-3.5-1.2Z"/></svg>
+        <h3>Femmes sous protection</h3>
+        <p>Accompagnement et sécurisation des personnes exposées ou menacées.</p>
+      </div>
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c0-3 2.4-5 5.5-5s5.5 2 5.5 5"/></svg>
+        <h3>Enfants — GIS Kids</h3>
+        <p>Montre connectée, zone de sécurité et alerte immédiate dédiées aux enfants.</p>
+      </div>
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 9h16M5 9V5h14v4M6 9v11h12V9"/><path d="M10 20v-5h4v5"/></svg>
+        <h3>Commerces &amp; entreprises</h3>
+        <p>Sécurisation de sites, levée de doute sur alarme et passages dissuasifs.</p>
+      </div>
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.5 6.5 0 0 0 9.5 9.5Z"/></svg>
+        <h3>Établissements de nuit</h3>
+        <p>Présence aux abords, gestion des situations sensibles, raccompagnements.</p>
+      </div>
+      <div class="pq-card reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/></svg>
+        <h3>Événements privés</h3>
+        <p>Dispositifs dimensionnés à la demande, réservables à l'avance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉCOSYSTÈME DIGITAL ============ -->
+<section id="digital">
+  <div class="wrap">
+    <div class="sec-tag reveal">06 — L'écosystème digital</div>
+    <h2 class="reveal">Un bouton. <span class="accent">Trois écrans.</span></h2>
+    <p class="sec-intro reveal">L'alerte, le suivi et la réservation passent par un écosystème complet : application mobile, montre enfant, site web.</p>
+    <div class="offer-grid">
+      <div class="offer-card featured reveal">
+        <div class="o-tag">Application GIS</div>
+        <h3>Le bouton SOS dans la poche</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Bouton SOS — alerte immédiate</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Géolocalisation &amp; suivi en temps réel</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Envoi de l'équipe la plus proche</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Alerte des proches &amp; des autorités</li>
+        </ul>
+        <div class="store-line">App Store · Google Play</div>
+      </div>
+      <div class="offer-card reveal">
+        <div class="o-tag">GIS Kids</div>
+        <h3>La montre qui veille sur eux</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Zone de sécurité de 100 m</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Alerte immédiate si sortie de zone</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Géolocalisation en continu</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>L'application prend le relais</li>
+        </ul>
+        <div class="store-line">Montre connectée enfants</div>
+      </div>
+      <div class="offer-card reveal">
+        <div class="o-tag">Site web interactif</div>
+        <h3>Réserver, suivre, payer</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Réservation d'équipe à l'heure ou à la journée</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Abonnements mensuels</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Suivi des interventions</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Espace client &amp; paiement en ligne sécurisés</li>
+        </ul>
+        <div class="store-line">www.gis-securite.fr</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OFFRE ============ -->
+<section id="offre">
+  <div class="wrap">
+    <div class="sec-tag reveal">07 — L'offre</div>
+    <h2 class="reveal">Dès 30 €. <span class="accent">Zéro friction.</span></h2>
+    <div class="offer-grid">
+      <div class="offer-card reveal">
+        <div class="o-tag">À la demande</div>
+        <h3>Intervention immédiate</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Déclenchement par bouton d'alerte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Géolocalisation en temps réel</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Unité la plus proche dépêchée</li>
+        </ul>
+        <a class="btn btn-ghost" href="#investisseurs">En savoir plus</a>
+      </div>
+      <div class="offer-card featured reveal">
+        <div class="o-tag">À partir de</div>
+        <h3>Protection rapprochée</h3>
+        <div class="price">30<small>€/heure</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Binôme d'agents expérimentés</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Location à l'heure ou à la journée</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Abonnements mensuels disponibles</li>
+        </ul>
+        <a class="btn btn-gold" href="#investisseurs">Découvrir l'offre</a>
+      </div>
+      <div class="offer-card reveal">
+        <div class="o-tag">Planifiée</div>
+        <h3>Réservation à l'avance</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Dates et créneaux réservables</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Trajets sensibles, sorties, événements</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg>Réservez votre équipe à l'avance</li>
+        </ul>
+        <a class="btn btn-ghost" href="#investisseurs">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DÉPLOIEMENT ============ -->
+<section id="deploiement">
+  <div class="wrap">
+    <div class="deploy-grid">
+      <div>
+        <div class="sec-tag reveal">08 — Le déploiement</div>
+        <h2 class="reveal">Les grandes villes, <span class="accent">une à une.</span></h2>
+        <p class="sec-intro reveal">Le dispositif s'implante d'abord là où la demande est la plus forte, puis s'étend ville par ville sur le territoire.</p>
+        <div class="city-list">
+          <div class="city reveal">
+            <span class="c-name"><i></i>Paris</span>
+            <span class="c-status">Lancement</span>
+          </div>
+          <div class="city reveal">
+            <span class="c-name"><i></i>Le Mans</span>
+            <span class="c-status">Lancement</span>
+          </div>
+          <div class="city soon reveal">
+            <span class="c-name"><i></i>Lyon · Bordeaux · Marseille</span>
+            <span class="c-status">Non confirmé</span>
+          </div>
+        </div>
+      </div>
+      <div class="map-panel reveal" aria-hidden="true">
+        <svg viewBox="0 0 640 615" fill="none">
+          <!-- France métropolitaine -->
+          <path class="fr-outline" d="M335,65 L314,70 304,82 300,111 244,150 174,137 176,177 180,196 128,203 50,210 52,230 106,248 152,273 194,333 196,363 192,415 178,479 169,486 220,508 300,533 362,533 360,505 388,483 432,487 455,494 477,500 506,490 531,467 540,463 516,429 522,396 515,349 480,325 482,297 540,256 556,199 568,178 520,166 488,151 440,138 433,115 400,106 364,84 Z"/>
+          <!-- Corse -->
+          <path class="fr-outline" d="M614,505 L590,529 590,564 606,593 611,582 Z"/>
+          <!-- Liaison Paris ↔ Le Mans -->
+          <line class="route" x1="334" y1="185" x2="248" y2="232"/>
+          <!-- Villes confirmées -->
+          <g>
+            <circle class="c-ring" cx="334" cy="185" r="14"/>
+            <circle class="c-dot" cx="334" cy="185" r="6"/>
+            <text class="c-label" x="350" y="178">PARIS</text>
+          </g>
+          <g>
+            <circle class="c-ring" cx="248" cy="232" r="14"/>
+            <circle class="c-dot" cx="248" cy="232" r="6"/>
+            <text class="c-label" x="232" y="262" text-anchor="end">LE MANS</text>
+          </g>
+          <!-- Villes non confirmées -->
+          <g>
+            <circle class="c-dot pending" cx="434" cy="354" r="5.5"/>
+            <text class="c-label pending" x="450" y="360">LYON</text>
+          </g>
+          <g>
+            <circle class="c-dot pending" cx="217" cy="405" r="5.5"/>
+            <text class="c-label pending" x="201" y="411" text-anchor="end">BORDEAUX</text>
+          </g>
+          <g>
+            <circle class="c-dot pending" cx="452" cy="480" r="5.5"/>
+            <text class="c-label pending" x="440" y="464" text-anchor="end">MARSEILLE</text>
+          </g>
+        </svg>
+        <div class="map-legend">
+          <span><i class="l-on"></i>Lancement confirmé</span>
+          <span><i class="l-off"></i>Non confirmé — à l'étude</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OBJECTIFS ============ -->
+<section id="objectifs">
+  <div class="wrap">
+    <div class="sec-tag reveal">09 — Les objectifs</div>
+    <h2 class="reveal">Trois horizons. <span class="accent">Un cap.</span></h2>
+    <p class="sec-intro reveal">Feuille de route en construction : les jalons précis seront définis avec le fondateur. <b>Section à compléter.</b></p>
+    <div class="timeline">
+      <div class="horizon reveal">
+        <span class="h-marker"></span>
+        <div class="h-phase">Phase 01</div>
+        <div class="h-term">Court terme</div>
+        <ul class="h-slots">
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+        </ul>
+      </div>
+      <div class="horizon reveal">
+        <span class="h-marker"></span>
+        <div class="h-phase">Phase 02</div>
+        <div class="h-term">Moyen terme</div>
+        <ul class="h-slots">
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+        </ul>
+      </div>
+      <div class="horizon reveal">
+        <span class="h-marker"></span>
+        <div class="h-phase">Phase 03</div>
+        <div class="h-term">Long terme</div>
+        <ul class="h-slots">
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+          <li>Objectif à définir</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FONDATEUR ============ -->
+<section id="fondateur">
+  <div class="wrap">
+    <div class="founder-grid">
+      <div class="founder-visual reveal">
+        <svg viewBox="0 0 200 220" fill="none">
+          <circle cx="100" cy="78" r="34" stroke="#C9A14E" stroke-width="2"/>
+          <path d="M40 196c0-33 27-52 60-52s60 19 60 52" stroke="#C9A14E" stroke-width="2"/>
+          <path d="M100 26v-14M100 12l-7 7M100 12l7 7" stroke="rgba(201,161,78,.4)" stroke-width="1.5"/>
+        </svg>
+        <span class="fv-tag">Fondateur — Direction des opérations</span>
+      </div>
+      <div>
+        <div class="sec-tag reveal">10 — Le fondateur</div>
+        <h2 class="reveal">27 ans de police. <span class="accent">Une conviction.</span></h2>
+        <blockquote class="reveal">« J'ai passé <b>27 ans au sein de la police</b>. J'ai vu ce que devient une situation quand l'aide arrive trop tard. GIS existe pour une seule raison : que la protection arrive <b>à temps, à chaque fois</b>. »</blockquote>
+        <div class="founder-id reveal">
+          <span class="f-mark">O</span>
+          <div>
+            <div class="f-name">Olivier</div>
+            <div class="f-role">Fondateur — 27 ans de service dans la police</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CADRE & CONFORMITÉ ============ -->
+<section id="conformite">
+  <div class="wrap">
+    <div class="sec-tag reveal">11 — Cadre &amp; conformité</div>
+    <h2 class="reveal">Un service privé. <span class="accent">Un cadre strict.</span></h2>
+    <div class="conf-grid">
+      <div class="conf reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 12h.01M15 12h.01"/></svg>
+        <h3>En collaboration avec les autorités</h3>
+        <p>Ministère de l'Intérieur, Préfecture, Police nationale : GIS opère en lien avec les autorités compétentes.</p>
+      </div>
+      <div class="conf reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg>
+        <h3>Autorisation CNAPS obligatoire</h3>
+        <p>Service privé de sécurité opérant dans le respect strict du cadre légal de la profession.</p>
+      </div>
+      <div class="conf reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <h3>RGPD conforme</h3>
+        <p>Données sécurisées et confidentielles : géolocalisation et captation vidéo encadrées.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANNEXE — PISTES EN RÉFLEXION ============ -->
+<section id="annexe">
+  <div class="wrap">
+    <div class="annexe-head">
+      <div>
+        <div class="sec-tag reveal">Annexe — Pistes en réflexion</div>
+        <h2 class="reveal">À retravailler <span class="accent">ensemble.</span></h2>
+        <p class="sec-intro reveal">Idées en cours d'arbitrage avec le fondateur. Contenu de travail, <b>non définitif</b> — destiné à la discussion avant la version investisseurs.</p>
+      </div>
+      <span class="stamp reveal">Version de travail — ne pas diffuser</span>
+    </div>
+    <div class="idea-grid">
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="8" y="6" width="8" height="12" rx="3"/><path d="M10 6V3.5h4V6M10 18v2.5h4V18"/><circle cx="12" cy="12" r="1.6"/></svg>
+        <h3>Abonnement &amp; bracelet connecté</h3>
+        <p>Formule d'abonnement avec bracelet connecté dédié : <b>un clic, la protection est appelée</b>. Une alternative au déclenchement par téléphone pour les clients réguliers.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Revoir la gamme tarifaire (abonnement vs 30 €/h)
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="8" y="6" width="8" height="12" rx="3"/><path d="M10 6V3.5h4M10 18v2.5h4"/><path d="M12 10v2.5l1.5 1"/></svg>
+        <h3>Montre connectée adultes</h3>
+        <p>Synchronisation de l'application GIS avec la montre du client (type Apple Watch) : <b>déclenchement de l'alerte depuis le poignet</b>, en complément du téléphone.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Préciser plateformes &amp; parcours de déclenchement
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10.5h18M7 15.5h4"/></svg>
+        <h3>Paiement intégré à l'appli</h3>
+        <p>Compte bancaire lié à l'application : <b>appel reçu → intervention → débit en fin d'intervention</b>, validé par la signature du client sur place.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Cadre légal &amp; prestataire de paiement à définir
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="10" cy="10.5" r="2.5"/><path d="M15.5 8.5v4"/></svg>
+        <h3>Application ADMIN — supervision</h3>
+        <p>Centre de pilotage interne : <b>géolocalisation des motos en temps réel</b>, affectation des unités sur les alertes, vue d'ensemble du dispositif ville par ville.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Périmètre à définir : dispatch, historique, statistiques
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3v4M12 17v4M5 12H3M21 12h-2M7 7 5.5 5.5M17 7l1.5-1.5"/><circle cx="12" cy="12" r="3.5"/></svg>
+        <h3>Protocole caméras — fin de journée</h3>
+        <p>Les caméras embarquées (désormais officielles) : <b>protocole de fin de journée à formaliser</b> — caméra remise en charge + contenu déchargé sur un serveur sécurisé.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Durée de conservation &amp; hébergement à définir (RGPD)
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><path d="M9.5 10h5M12 7.5v5"/></svg>
+        <h3>Tarif différencié par ville</h3>
+        <p>Adapter le tarif horaire au marché local : <b>Paris 50 €/h, Le Mans 30 €/h ?</b> Le prix suit le coût d'exploitation et la demande de chaque ville.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Grille tarifaire nationale à arbitrer (lisibilité vs rentabilité)
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+        <h3>Bip d'identification client</h3>
+        <p>Signal sonore (bip) émis pendant l'intervention pour <b>différencier immédiatement le client des autres usagers</b> : l'unité ne perd pas de temps à chercher la bonne personne.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Forme du signal à définir : sonore, visuel, via app ou bracelet
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.5 16.5c.7-1.6 1.9-2.5 3.5-2.5s2.8.9 3.5 2.5M15 9.5h4M15 13h4"/></svg>
+        <h3>Compte client obligatoire ?</h3>
+        <p>Création de compte avec <b>vérification d'identité</b> pour éviter les faux appels : carte d'identité obligatoire ? Permis ? Quelles informations exiger au juste ?</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Liste des pièces à trancher : CNI, permis, justificatif…
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="6" cy="17" r="2.6"/><circle cx="18" cy="17" r="2.6"/><path d="M6 17h5l3-7h3M13 7h3l2.5 4.5M9.5 10H13"/></svg>
+        <h3>Urgence sans abonnement — unité rouge</h3>
+        <p>Un service d'urgence <b>toujours disponible, appelable sans compte</b> : moto rouge + combinaison rouge dédiées aux clients sans abonnement. Paiement au calme en fin d'intervention : <b>CB, liquide ou virement</b>.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          À arbitrer : cohérence avec l'identité noire, risque d'impayés
+        </div>
+      </div>
+      <div class="idea-card reveal">
+        <span class="wip">En étude</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m12 3 2.7 5.6 6.3.8-4.6 4.3 1.2 6.1L12 16.9l-5.6 2.9 1.2-6.1L3 9.4l6.3-.8L12 3Z"/></svg>
+        <h3>Abonnement client VIP</h3>
+        <p>Formule premium avec <b>intervention prioritaire et plus rapide</b> : les unités traitent l'alerte VIP avant les demandes standard.</p>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          Définir niveaux de priorité, prix et promesse de délai
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTISSEURS ============ -->
+<section id="investisseurs">
+  <div class="sec-tag reveal">12 — Investisseurs</div>
+  <h2 class="reveal">Construisons le réflexe sécurité <span class="accent">de demain.</span></h2>
+  <p class="sec-intro reveal">Un service inédit en France, un fondateur issu du terrain, un modèle simple et réplicable ville par ville. Le dossier complet est disponible sur demande.</p>
+  <div class="invest-points">
+    <div class="ipoint reveal"><div class="num">27</div><p>Ans d'expérience police au commandement</p></div>
+    <div class="ipoint reveal"><div class="num">20</div><p>Agents en rotation — anciens militaires</p></div>
+    <div class="ipoint reveal"><div class="num">10</div><p>Motos BMW en duo + quad + drone</p></div>
+    <div class="ipoint reveal"><div class="num">2</div><p>Villes au lancement — modèle réplicable</p></div>
+  </div>
+  <div class="invest-cta reveal">
+    <a class="btn btn-gold" href="mailto:contact@gis-securite.fr?subject=Dossier%20investisseur%20GIS">
+      Demander le dossier investisseur
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <a class="btn btn-ghost" href="#top">Revoir la présentation</a>
+  </div>
+  <div class="confidential reveal">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    Document de présentation confidentiel — ne pas diffuser
+  </div>
+</section>
+
+<footer>
+  <div class="f-left">
+    <img class="logo-mark-img foot-logo" src="gis-logo.png" alt="GIS">
+    <div>
+      <p>Groupe Intervention Sécurité</p>
+      <p class="f-slogan">Votre sécurité, notre mission.</p>
+    </div>
+  </div>
+  <div class="f-contact">
+    <a href="tel:+33600000000">06 00 00 00 00</a>
+    <a href="https://www.gis-securite.fr">www.gis-securite.fr</a>
+    <a href="mailto:contact@gis-securite.fr">contact@gis-securite.fr</a>
+  </div>
+  <p>© 2026 GIS — Tous droits réservés</p>
+</footer>
+
+<script>
+// barre de progression + état nav
+const nav=document.getElementById('nav'),progress=document.getElementById('progress');
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  progress.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  nav.classList.toggle('scrolled',h.scrollTop>40);
+},{passive:true});
+
+// révélations au scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// compteurs animés
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  cio.unobserve(e.target);
+  const el=e.target,target=+el.dataset.count,suffix=el.querySelector('span');
+  if(reduced){el.firstChild.textContent=target;return}
+  const t0=performance.now(),dur=1400;
+  (function tick(t){
+    const p=Math.min((t-t0)/dur,1),v=Math.round(target*(1-Math.pow(1-p,3)));
+    el.firstChild.textContent=v;
+    if(p<1)requestAnimationFrame(tick);
+  })(t0);
+}),{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+</script>
+</body>
+</html>
