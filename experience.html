@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="gis-logo.png">
+<title>GIS — Expérience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@property --beam{syntax:'<angle>';inherits:false;initial-value:0deg}
+:root{
+  --black:#060606;--black-2:#0A0A0C;--panel:#101013;
+  --line:rgba(201,161,78,.22);
+  --gold:#C9A14E;--gold-bright:#F0CB63;--gold-deep:#8A6B2E;
+  --text:#F4F1E9;--muted:#9E9A8E;
+  --disp:'Anton',sans-serif;--head:'Oswald',sans-serif;--body:'Barlow Semi Condensed',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--black);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:#060606}
+img{max-width:100%}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* progress + nav */
+#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));box-shadow:0 0 12px var(--gold)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:18px 30px;pointer-events:none;mix-blend-mode:difference}
+.nav .b{display:flex;align-items:center;gap:12px}
+.nav .b img{height:38px}
+.nav .b span{font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:3px;color:#fff;text-transform:uppercase}
+.nav .r{font-family:var(--head);font-weight:600;font-size:11px;letter-spacing:2px;color:#fff;text-transform:uppercase}
+
+/* generic */
+section{position:relative;z-index:2}
+.wrap{max-width:1240px;margin:0 auto;padding:0 30px}
+.kick{display:inline-flex;align-items:center;gap:14px;font-family:var(--head);font-weight:600;font-size:clamp(12px,1.4vw,15px);letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
+.kick::before{content:"";width:44px;height:3px;background:var(--gold)}
+h2{font-family:var(--head);font-weight:700;font-size:clamp(36px,6vw,82px);line-height:.98;letter-spacing:1px;text-transform:uppercase}
+h2 .g{color:var(--gold)}
+.lead{font-family:var(--body);font-size:clamp(18px,2.3vw,27px);color:var(--muted);max-width:820px;margin-top:22px;line-height:1.5}
+.lead b{color:var(--text)}
+
+/* gradient text (Magic UI style) */
+.grad{background:linear-gradient(100deg,var(--gold-deep) 0%,var(--gold) 25%,#FFF4D6 50%,var(--gold-bright) 75%,var(--gold-deep) 100%);
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:gradmove 6s linear infinite}
+@keyframes gradmove{to{background-position:200% center}}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:120px 24px 90px}
+.aurora{position:absolute;inset:-20% -10%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.55}
+.aurora i{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:drift 16s ease-in-out infinite}
+.aurora .a1{width:44vw;height:44vw;left:8%;top:6%;background:radial-gradient(circle,rgba(201,161,78,.55),transparent 65%)}
+.aurora .a2{width:38vw;height:38vw;right:6%;top:22%;background:radial-gradient(circle,rgba(240,203,99,.4),transparent 65%);animation-delay:-5s}
+.aurora .a3{width:40vw;height:40vw;left:30%;bottom:2%;background:radial-gradient(circle,rgba(138,107,46,.5),transparent 65%);animation-delay:-9s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6%,-5%) scale(1.12)}66%{transform:translate(-5%,4%) scale(.94)}}
+.meteors{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.meteor{position:absolute;top:-10%;width:2px;height:90px;background:linear-gradient(180deg,var(--gold-bright),transparent);transform:rotate(28deg);opacity:0;animation:meteor 5s linear infinite}
+@keyframes meteor{0%{opacity:0;transform:translate(0,-20vh) rotate(28deg)}8%{opacity:.9}100%{opacity:0;transform:translate(40vw,120vh) rotate(28deg)}}
+.hero-inner{position:relative;z-index:3;max-width:1000px}
+.hero .shield{height:clamp(120px,20vh,200px);filter:drop-shadow(0 14px 40px rgba(0,0,0,.7)) drop-shadow(0 0 34px rgba(201,161,78,.28));animation:float 5.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero h1{font-family:var(--disp);font-size:clamp(52px,10vw,150px);line-height:.9;letter-spacing:1px;text-transform:uppercase;margin-top:22px}
+.hero .sub{font-family:var(--head);font-weight:500;font-size:clamp(16px,2.2vw,24px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:20px}
+.scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--head);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:10px}
+.scrollcue .m{width:24px;height:38px;border:2px solid var(--line);border-radius:14px;position:relative}
+.scrollcue .m::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:8px;border-radius:2px;background:var(--gold);animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{0%{opacity:0;top:7px}40%{opacity:1}100%{opacity:0;top:20px}}
+
+/* ===== MARQUEE ===== */
+.mq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--black-2);padding:24px 0;overflow:hidden}
+.mq-row{display:flex;gap:0;width:max-content;animation:mq 32s linear infinite}
+.mq-row.rev{animation-direction:reverse;animation-duration:40s}
+.mq-row span{font-family:var(--disp);font-size:clamp(26px,4vw,52px);letter-spacing:2px;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(201,161,78,.55);padding:0 34px;white-space:nowrap}
+.mq-row span.f{color:var(--gold);-webkit-text-stroke:0}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ===== STATS ===== */
+.stats{padding:110px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:2px solid var(--line);margin-top:12px}
+.stat{background:#0a0a0c;padding:44px 24px;text-align:center}
+.stat .n{font-family:var(--disp);font-size:clamp(56px,8vw,120px);line-height:.8;color:var(--gold-bright)}
+.stat .l{font-family:var(--head);font-weight:600;font-size:clamp(12px,1.4vw,16px);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:14px}
+
+/* ===== MANIFESTO ===== */
+.mani{padding:120px 0;text-align:center}
+.mani .big{font-family:var(--disp);font-size:clamp(34px,5.4vw,80px);line-height:1.02;letter-spacing:1px;text-transform:uppercase;max-width:1100px;margin:0 auto}
+.mani .big .g{color:var(--gold)}
+.word{display:inline-block}
+
+/* ===== HORIZONTAL PINNED ===== */
+.hwrap{height:100vh;overflow:hidden;position:relative}
+.htrack{display:flex;height:100vh;will-change:transform}
+.hpanel{min-width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 30px;position:relative}
+.hpanel .box{max-width:780px}
+.hpanel .idx{font-family:var(--disp);font-size:clamp(90px,16vw,240px);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(201,161,78,.45)}
+.hpanel h3{font-family:var(--head);font-weight:700;font-size:clamp(30px,4.4vw,60px);letter-spacing:1px;text-transform:uppercase;margin-top:10px}
+.hpanel h3 .g{color:var(--gold)}
+.hpanel p{color:var(--muted);font-size:clamp(16px,1.9vw,22px);margin-top:16px;line-height:1.5;max-width:560px}
+.hpanel .tagtop{position:absolute;top:96px;left:0;right:0;text-align:center;font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.hprog{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);z-index:5;width:min(420px,70vw);height:3px;background:rgba(255,255,255,.1)}
+.hprog i{display:block;height:100%;width:0;background:var(--gold-bright)}
+/* fallback si pas de GSAP */
+html:not(.gsap-ready) .hwrap{height:auto;overflow:visible}
+html:not(.gsap-ready) .htrack{flex-direction:column;height:auto}
+html:not(.gsap-ready) .hpanel{min-width:100%;height:auto;min-height:70vh;border-bottom:1px solid var(--line)}
+html:not(.gsap-ready) .hprog{display:none}
+
+/* ===== VALUES ===== */
+.values{padding:120px 0}
+.vgrid{display:flex;flex-wrap:wrap;gap:16px;margin-top:38px}
+.vchip{border:1.5px solid var(--line);background:#0a0a0c;padding:16px 24px;font-family:var(--head);font-weight:600;font-size:clamp(15px,1.9vw,22px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text);transition:border-color .3s,color .3s,transform .3s}
+.vchip:hover{border-color:var(--gold);color:var(--gold-bright);transform:translateY(-4px)}
+.ethic{margin-top:44px;font-family:var(--disp);font-size:clamp(26px,4vw,56px);letter-spacing:1px;text-transform:uppercase;color:var(--gold-bright);line-height:1}
+.ethic small{display:block;font-family:var(--body);font-size:clamp(16px,1.8vw,20px);color:var(--muted);letter-spacing:0;text-transform:none;margin-top:14px;font-weight:400;max-width:680px}
+
+/* ===== NICE ===== */
+.nice{padding:120px 0;overflow:hidden}
+.nice-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.nice h2 .g{color:var(--gold)}
+.mapbox{position:relative;border:2px solid var(--line);padding:24px;background:radial-gradient(ellipse at 62% 66%,rgba(201,161,78,.08),transparent 60%),var(--panel);max-width:480px;margin:0 auto;width:100%}
+.mapbox svg{width:100%;height:auto;display:block}
+#fr{fill:rgba(201,161,78,.03);stroke:var(--gold);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+.nd{fill:var(--gold-bright)}
+.nr{fill:none;stroke:var(--gold);stroke-width:1.4;transform-box:fill-box;transform-origin:center;animation:np 2.4s ease-out infinite}
+@keyframes np{0%{transform:scale(.5);opacity:.95}100%{transform:scale(3.2);opacity:0}}
+.nlab{font-family:var(--disp);font-size:26px;letter-spacing:2px;fill:var(--text)}
+
+/* ===== OFFRE ===== */
+.offre{padding:130px 0;text-align:center;background:radial-gradient(ellipse 70% 80% at 50% 40%,rgba(201,161,78,.08),transparent 60%)}
+.price{font-family:var(--disp);font-size:clamp(110px,18vw,240px);line-height:.74;color:var(--gold-bright);text-shadow:0 10px 46px rgba(201,161,78,.25)}
+.price small{font-size:.3em;color:var(--gold)}
+.pnote{font-family:var(--head);font-weight:600;font-size:clamp(15px,1.9vw,21px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:20px}
+.cta-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+/* border-beam button (Magic UI style) */
+.beam{position:relative;display:inline-flex;align-items:center;gap:12px;font-family:var(--head);font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-bright);background:#0b0b0d;padding:19px 38px;border-radius:2px;text-decoration:none;cursor:pointer;overflow:hidden;isolation:isolate}
+.beam::before{content:"";position:absolute;inset:0;padding:1.5px;border-radius:inherit;background:conic-gradient(from var(--beam),transparent 0 66%,var(--gold-bright) 82%,#fff 90%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:beamspin 4s linear infinite}
+@keyframes beamspin{to{--beam:360deg}}
+.beam svg{width:16px;height:16px}
+/* shimmer button */
+.shim{position:relative;display:inline-flex;align-items:center;font-family:var(--head);font-weight:700;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#060606;background:var(--gold);padding:20px 40px;border-radius:2px;text-decoration:none;cursor:pointer;overflow:hidden}
+.shim::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:shim 3.4s ease-in-out infinite}
+@keyframes shim{0%{left:-60%}60%,100%{left:130%}}
+
+/* ===== FOUNDER ===== */
+.founder{padding:120px 0}
+.quote{font-family:var(--body);font-size:clamp(22px,3vw,42px);line-height:1.4;font-weight:400;border-left:5px solid var(--gold);padding-left:30px;max-width:1000px}
+.quote b{color:var(--gold-bright)}
+.sign{margin-top:28px;display:flex;align-items:center;gap:20px}
+.sign .m{width:60px;height:60px;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--disp);font-size:26px;color:var(--gold)}
+.sign .nm{font-family:var(--disp);font-size:26px;letter-spacing:1px}
+.sign .rl{font-family:var(--head);font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+/* ===== CLOSING ===== */
+.closing{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:110px 24px;position:relative;overflow:hidden}
+.closing .aurora{opacity:.4}
+.closing-inner{position:relative;z-index:3}
+.closing .shield{height:clamp(110px,17vh,180px);filter:drop-shadow(0 0 30px rgba(201,161,78,.25))}
+.closing .slog{font-family:var(--head);font-weight:700;font-size:clamp(24px,4vw,52px);letter-spacing:.5px;text-transform:uppercase;margin-top:22px;max-width:900px;line-height:1.08}
+.contacts{display:flex;justify-content:center;gap:16px 40px;flex-wrap:wrap;margin-top:36px}
+.contacts a{display:flex;align-items:center;gap:11px;font-family:var(--head);font-weight:600;font-size:clamp(14px,1.7vw,18px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;transition:color .2s}
+.contacts a:hover{color:var(--gold-bright)}
+.contacts svg{width:19px;height:19px;stroke:var(--gold)}
+.mission{font-family:var(--disp);font-size:clamp(26px,4vw,52px);letter-spacing:2px;color:var(--gold-bright);transform:skewX(-7deg);margin-top:30px}
+
+/* reveal : visible par défaut, armé seulement si JS/IO dispo */
+.rv{opacity:1;transform:none;transition:opacity .8s ease,transform .8s ease}
+html.anim .rv{opacity:0;transform:translateY(32px)}
+html.anim .rv.in{opacity:1;transform:none}
+
+@media(max-width:820px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .nice-grid{grid-template-columns:1fr;gap:36px}
+  .nav .r{display:none}
+  /* section dispositif : empilée en vertical sur mobile (pas d'épinglage horizontal) */
+  .hwrap{height:auto!important;overflow:visible!important}
+  .htrack{flex-direction:column!important;height:auto!important;transform:none!important}
+  .hpanel{min-width:100%!important;width:100%;height:auto;min-height:66vh;padding:80px 24px;border-bottom:1px solid var(--line)}
+  .hpanel .tagtop{position:static;text-align:left;margin-bottom:18px}
+  .hprog{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important}
+  .rv{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="nav">
+  <div class="b"><img src="gis-logo.png" alt="GIS"><span>Groupe Intervention Sécurité</span></div>
+  <div class="r">Offre Particuliers · Nice</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <div class="meteors" id="meteors"></div>
+  <div class="hero-inner">
+    <img class="shield" id="heroShield" src="gis-logo.png" alt="Logo GIS">
+    <h1><span class="grad">La protection</span><br>qui n'attend pas.</h1>
+    <div class="sub">L'expérience des forces régaliennes au service de votre protection</div>
+  </div>
+  <div class="scrollcue"><span class="m"></span>Défiler</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq" aria-hidden="true">
+  <div class="mq-row">
+    <span class="f">Protection</span><span>·</span><span>Intervention</span><span>·</span><span class="f">Rigueur</span><span>·</span><span>Loyauté</span><span>·</span><span class="f">Forces régaliennes</span><span>·</span><span>Discrétion</span><span>·</span>
+    <span class="f">Protection</span><span>·</span><span>Intervention</span><span>·</span><span class="f">Rigueur</span><span>·</span><span>Loyauté</span><span>·</span><span class="f">Forces régaliennes</span><span>·</span><span>Discrétion</span><span>·</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap">
+    <div class="kick rv">En chiffres</div>
+    <div class="stats-grid">
+      <div class="stat rv"><div class="n" data-count="50" data-suffix="">0</div><div class="l">Agents (objectif)</div></div>
+      <div class="stat rv"><div class="n" data-count="5" data-suffix=" ans">0</div><div class="l">Expérience minimum</div></div>
+      <div class="stat rv"><div class="n" data-count="2" data-suffix="">0</div><div class="l">Équipes jour / nuit</div></div>
+      <div class="stat rv"><div class="n" data-text="24/7">24/7</div><div class="l">Couverture continue</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="mani">
+  <div class="wrap">
+    <p class="big" id="mani">Nous ne faisons pas tout pour l'argent. <span class="g">L'humain passe avant.</span> Nos valeurs ne se négocient pas.</p>
+  </div>
+</section>
+
+<!-- HORIZONTAL PINNED — LE DISPOSITIF -->
+<section class="hwrap" id="hwrap">
+  <div class="htrack" id="htrack">
+    <div class="hpanel"><span class="tagtop">Le dispositif · 4 temps</span><div class="box"><div class="idx">01</div><h3>L'<span class="g">alerte</span></h3><p>Bouton SOS sur l'application, ou réservation à l'avance. Un geste suffit.</p></div></div>
+    <div class="hpanel"><span class="tagtop">Le dispositif · 4 temps</span><div class="box"><div class="idx">02</div><h3>La <span class="g">géolocalisation</span></h3><p>Votre position transmise en temps réel à l'unité la plus proche.</p></div></div>
+    <div class="hpanel"><span class="tagtop">Le dispositif · 4 temps</span><div class="box"><div class="idx">03</div><h3>Le <span class="g">déploiement</span></h3><p>Deux agents tracent vers vous en s'affranchissant du trafic.</p></div></div>
+    <div class="hpanel"><span class="tagtop">Le dispositif · 4 temps</span><div class="box"><div class="idx">04</div><h3>La <span class="g">protection</span></h3><p>Protection rapprochée assurée jusqu'à votre mise en sécurité.</p></div></div>
+  </div>
+  <div class="hprog"><i id="hprogbar"></i></div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="wrap">
+    <div class="kick rv">Nos valeurs</div>
+    <h2 class="rv">Droit <span class="g">dans les bottes.</span></h2>
+    <div class="vgrid">
+      <span class="vchip rv">Rigueur</span><span class="vchip rv">Professionnalisme</span><span class="vchip rv">Loyauté</span>
+      <span class="vchip rv">Précision</span><span class="vchip rv">Maîtrise</span><span class="vchip rv">Courage</span>
+      <span class="vchip rv">Abnégation</span><span class="vchip rv">Efficacité</span><span class="vchip rv">Force</span>
+      <span class="vchip rv">Honneur</span><span class="vchip rv">Connaissance du terrain</span>
+    </div>
+    <div class="ethic rv">Être humain avant tout.<small>Des experts issus des forces régaliennes — police, gendarmerie, armée — au service de votre sécurité.</small></div>
+  </div>
+</section>
+
+<!-- NICE -->
+<section class="nice">
+  <div class="wrap nice-grid">
+    <div>
+      <div class="kick rv">Le déploiement</div>
+      <h2 class="rv">Lancement<br><span class="g">à Nice.</span></h2>
+      <p class="lead rv">GIS s'implante d'abord sur la <b>Côte d'Azur</b> — un territoire idéal pour un déploiement <b>rapide et réactif</b>, avant l'extension à d'autres villes.</p>
+    </div>
+    <div class="mapbox rv" aria-hidden="true">
+      <svg viewBox="0 0 640 615" fill="none">
+        <path id="fr" d="M335,65 L314,70 304,82 300,111 244,150 174,137 176,177 180,196 128,203 50,210 52,230 106,248 152,273 194,333 196,363 192,415 178,479 169,486 220,508 300,533 362,533 360,505 388,483 432,487 455,494 477,500 506,490 531,467 540,463 516,429 522,396 515,349 480,325 482,297 540,256 556,199 568,178 520,166 488,151 440,138 433,115 400,106 364,84 Z"/>
+        <circle class="nr" cx="508" cy="470" r="16"/>
+        <circle class="nd" cx="508" cy="470" r="7.5"/>
+        <text class="nlab" x="492" y="452" text-anchor="end">NICE</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- OFFRE -->
+<section class="offre">
+  <div class="wrap">
+    <div class="kick rv" style="justify-content:center">L'offre</div>
+    <div class="price rv">50<small>€ / h</small></div>
+    <div class="pnote rv">Sans engagement · Devis sur-mesure pour vos événements</div>
+    <div class="cta-row rv">
+      <a class="shim" href="mailto:contact@gis-securite.fr?subject=Demande%20GIS%20Particuliers">Demander une protection</a>
+      <a class="beam" href="tel:+33600000000">06 00 00 00 00
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder">
+  <div class="wrap">
+    <div class="kick rv">Le fondateur</div>
+    <blockquote class="quote rv">« J'ai passé <b>22 ans au sein de la police</b>. J'ai vu ce que devient une situation quand l'aide arrive trop tard. GIS existe pour une seule raison : que la protection arrive <b>à temps, à chaque fois</b>. »</blockquote>
+    <div class="sign rv"><span class="m">O</span><div><div class="nm">Olivier</div><div class="rl">Fondateur — 22 ans de service dans la police</div></div></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <div class="closing-inner">
+    <img class="shield rv" src="gis-logo.png" alt="GIS">
+    <div class="slog rv">L'expérience des forces régaliennes <span class="grad">au service de votre protection.</span></div>
+    <div class="contacts rv">
+      <a href="tel:+33600000000"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>06 00 00 00 00</a>
+      <a href="https://www.gis-securite.fr"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>www.gis-securite.fr</a>
+      <a href="mailto:contact@gis-securite.fr"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>contact@gis-securite.fr</a>
+    </div>
+    <div class="mission rv">Votre sécurité, notre mission.</div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script>
+(function(){
+  var d=document.documentElement;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- meteors (CSS) ----
+  var mt=document.getElementById('meteors');
+  if(mt&&!reduce){for(var i=0;i<9;i++){var s=document.createElement('span');s.className='meteor';s.style.left=(Math.random()*90)+'%';s.style.animationDelay=(Math.random()*5)+'s';s.style.animationDuration=(3.5+Math.random()*3)+'s';mt.appendChild(s);}}
+
+  // ---- progress bar ----
+  var prog=document.getElementById('prog');
+  addEventListener('scroll',function(){var h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+  var hasIO=('IntersectionObserver' in window);
+
+  // ---- REVEALS (IntersectionObserver, robustes) ----
+  if(hasIO&&!reduce){
+    d.classList.add('anim');
+    var rio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rio.unobserve(e.target);}});},{threshold:0.14});
+    document.querySelectorAll('.rv').forEach(function(el){rio.observe(el);});
+    // filet ultime : tout révéler après 9s quoi qu'il arrive
+    setTimeout(function(){document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});},9000);
+  }
+
+  // ---- NUMBER TICKER (IO + fallback) ----
+  function runCount(el){var target=+el.dataset.count,suf=el.dataset.suffix||'';if(reduce){el.textContent=target+suf;return;}var t0=performance.now(),dur=1500;(function tick(t){var p=Math.min((t-t0)/dur,1),v=Math.round(target*(1-Math.pow(1-p,3)));el.textContent=v+suf;if(p<1)requestAnimationFrame(tick);})(t0);}
+  if(hasIO){
+    var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){cio.unobserve(e.target);runCount(e.target);}});},{threshold:0.5});
+    document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
+  }
+  // fallback : si un compteur est resté à 0 après 9s, poser la valeur finale
+  setTimeout(function(){document.querySelectorAll('[data-count]').forEach(function(el){if(el.textContent==='0')el.textContent=el.dataset.count+(el.dataset.suffix||'');});},9000);
+
+  // ---- GSAP : mouvements signatures (progressive enhancement) ----
+  var G=window.gsap, ST=window.ScrollTrigger;
+  if(G&&ST){
+    G.registerPlugin(ST);
+    d.classList.add('gsap-ready');
+
+    // parallaxe écu du hero
+    var sh=document.getElementById('heroShield');
+    if(sh)G.to(sh,{yPercent:40,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+    // manifeste mot à mot
+    var mani=document.getElementById('mani');
+    if(mani){
+      mani.innerHTML=mani.innerHTML.replace(/(<span[^>]*>)([^<]+)(<\/span>)|([^<\s]+)/g,function(m,o,inner,c,plain){
+        function wrap(t){return t.split(' ').filter(Boolean).map(function(w){return '<span class="word">'+w+'</span>';}).join(' ');}
+        if(plain!==undefined)return wrap(plain);
+        return o+wrap(inner)+c;
+      });
+      G.from(mani.querySelectorAll('.word'),{opacity:.14,y:16,stagger:.06,ease:'power2.out',
+        scrollTrigger:{trigger:mani,start:'top 80%',end:'top 42%',scrub:1}});
+    }
+
+    // section épinglée à défilement horizontal — DESKTOP uniquement (empilée en mobile)
+    var track=document.getElementById('htrack');
+    var panels=G.utils.toArray('.hpanel');
+    var pbar=document.getElementById('hprogbar');
+    if(track&&panels.length>1&&G.matchMedia){
+      var mm=G.matchMedia();
+      mm.add('(min-width:821px)',function(){
+        G.to(track,{xPercent:-100*(panels.length-1),ease:'none',
+          scrollTrigger:{trigger:'#hwrap',pin:true,scrub:1,invalidateOnRefresh:true,
+            end:function(){return '+='+(track.scrollWidth-window.innerWidth);},
+            onUpdate:function(self){if(pbar)pbar.style.width=(self.progress*100)+'%';}}});
+      });
+    }
+
+    addEventListener('load',function(){ST.refresh();});
+    setTimeout(function(){ST.refresh();},700);
+  }
+
+  // ---- Anime.js : tracé animé de la France (avec fallback visible) ----
+  var fr=document.getElementById('fr');
+  if(fr){
+    var len=fr.getTotalLength();
+    if(window.anime&&G&&ST&&!reduce){
+      fr.style.strokeDasharray=len;fr.style.strokeDashoffset=len;
+      ST.create({trigger:'.nice',start:'top 72%',once:true,onEnter:function(){
+        anime({targets:'#fr',strokeDashoffset:[len,0],easing:'easeInOutSine',duration:2200});
+      }});
+      // filet : s'assurer que le tracé est visible après 9s
+      setTimeout(function(){fr.style.strokeDashoffset=0;},9000);
+    }
+  }
+})();
+</script>
+</body>
+</html>
