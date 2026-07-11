@@ -11,171 +11,201 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#070707;--black-2:#0C0C0C;--panel:#101010;--panel-2:#151515;
-  --line:rgba(201,161,78,.22);--line-soft:rgba(255,255,255,.06);
-  --gold:#C9A14E;--gold-bright:#EFC65A;--gold-deep:#9A7A35;--yellow:#E3B53B;
-  --bleu:#0B4EA2;--rouge:#E4353B;
-  --text:#F3F0E8;--muted:#9C988C;
+  --black:#060606;--black-2:#0B0B0D;--panel:#101013;--panel-2:#16161A;
+  --line:rgba(201,161,78,.24);--line-soft:rgba(255,255,255,.06);
+  --gold:#C9A14E;--gold-bright:#F0CB63;--gold-deep:#9A7A35;--yellow:#E6B93B;
+  --bleu:#0A4DA8;--blanc:#F5F5F5;--rouge:#E62A34;
+  --text:#F4F1E9;--muted:#9E9A8E;
   --disp:'Anton',sans-serif;--head:'Oswald',sans-serif;--body:'Barlow Semi Condensed',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--black);color:var(--text);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
-::selection{background:var(--gold);color:#070707}
+::selection{background:var(--gold);color:#060606}
 body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-#bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));z-index:30;transition:width .4s ease;box-shadow:0 0 10px var(--gold)}
+/* ===== TRICOLORE — signature ===== */
+.topstrip{position:fixed;top:0;left:0;right:0;height:9px;z-index:32;display:flex}
+.topstrip i{flex:1}.topstrip .b{background:var(--bleu)}.topstrip .w{background:var(--blanc)}.topstrip .r{background:var(--rouge)}
+#bar{position:fixed;top:9px;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));z-index:31;transition:width .4s ease;box-shadow:0 0 12px var(--gold)}
+/* chevron tricolore décoratif en haut à droite */
+.corner{position:fixed;top:9px;right:0;z-index:23;pointer-events:none;opacity:.9}
+.corner svg{display:block}
 
-/* tricolore liseré (régalien) — bord gauche sur toutes les slides */
-.liseré{position:fixed;top:0;bottom:0;left:0;width:6px;z-index:26;display:flex;flex-direction:column}
-.liseré i{flex:1}
-.liseré .b{background:var(--bleu)}.liseré .w{background:#EDEDED}.liseré .r{background:var(--rouge)}
+/* bloc tricolore (kicker) */
+.tri{display:inline-flex;flex-shrink:0}
+.tri i{display:block}
+.tri.blk{height:26px;width:44px;box-shadow:0 2px 8px rgba(0,0,0,.6)}
+.tri.blk i{width:33.34%}
+.tri.blk .b{background:var(--bleu)}.tri.blk .w{background:var(--blanc)}.tri.blk .r{background:var(--rouge)}
+/* bande tricolore large */
+.tband{display:flex;height:16px;width:240px;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+.tband.lg{height:22px;width:340px}
+.tband i{flex:1}.tband .b{background:var(--bleu)}.tband .w{background:var(--blanc)}.tband .r{background:var(--rouge)}
 
-/* deck */
+/* ===== DECK ===== */
 .deck{position:fixed;inset:0;overflow:hidden}
 .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  padding:clamp(30px,5vw,80px);opacity:0;visibility:hidden;transform:translateY(24px) scale(.99);
-  transition:opacity .5s ease,transform .5s ease,visibility .5s;z-index:1}
+  padding:clamp(34px,5.2vw,90px);opacity:0;visibility:hidden;transform:translateY(26px) scale(.985);
+  transition:opacity .55s ease,transform .55s ease,visibility .55s;z-index:1}
 .slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
 .slide.dark2{background:var(--black-2)}
-.slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 90% 70% at 50% 0%,transparent 55%,rgba(0,0,0,.6) 100%)}
-.slide-inner{width:100%;max-width:1180px;position:relative;z-index:2}
+.slide.glow{background:radial-gradient(ellipse 80% 65% at 50% 22%,rgba(201,161,78,.10),transparent 60%),var(--black)}
+.slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 95% 75% at 50% 0%,transparent 52%,rgba(0,0,0,.66) 100%)}
+.slide-inner{width:100%;max-width:1240px;position:relative;z-index:3}
 
-.stg{opacity:0;transform:translateY(18px)}
-.slide.active .stg{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+/* filigrane écu */
+.wm{position:absolute;inset:0;z-index:0;display:grid;place-items:center;pointer-events:none}
+.wm img{width:min(72vh,620px);opacity:.05;filter:grayscale(.2)}
+
+/* stagger */
+.stg{opacity:0;transform:translateY(20px)}
+.slide.active .stg{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
 .slide.active .stg:nth-child(1){transition-delay:.10s}
-.slide.active .stg:nth-child(2){transition-delay:.18s}
-.slide.active .stg:nth-child(3){transition-delay:.26s}
-.slide.active .stg:nth-child(4){transition-delay:.34s}
-.slide.active .stg:nth-child(5){transition-delay:.42s}
-.slide.active .stg:nth-child(6){transition-delay:.50s}
+.slide.active .stg:nth-child(2){transition-delay:.19s}
+.slide.active .stg:nth-child(3){transition-delay:.28s}
+.slide.active .stg:nth-child(4){transition-delay:.37s}
+.slide.active .stg:nth-child(5){transition-delay:.46s}
+.slide.active .stg:nth-child(6){transition-delay:.55s}
 
-.tag{display:inline-flex;align-items:center;gap:14px;font-family:var(--head);font-weight:600;
-  font-size:clamp(12px,1.4vw,15px);letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
-.tag::before{content:"";width:44px;height:3px;background:var(--gold)}
-h1{font-family:var(--disp);font-size:clamp(44px,7.2vw,100px);line-height:.92;letter-spacing:1px;text-transform:uppercase}
+/* kicker */
+.kick{display:inline-flex;align-items:center;gap:16px;margin-bottom:30px}
+.kick .n{font-family:var(--head);font-weight:700;font-size:clamp(13px,1.5vw,16px);letter-spacing:5px;text-transform:uppercase;color:var(--gold)}
+.kick .n b{color:var(--gold-bright)}
+
+/* headings XXL */
+h1{font-family:var(--disp);font-size:clamp(50px,8.4vw,132px);line-height:.9;letter-spacing:1px;text-transform:uppercase}
 h1 .g{color:var(--gold)}
-h2{font-family:var(--head);font-weight:700;font-size:clamp(32px,5.2vw,66px);line-height:1;letter-spacing:1px;text-transform:uppercase}
+h2{font-family:var(--head);font-weight:700;font-size:clamp(36px,6vw,80px);line-height:.98;letter-spacing:1px;text-transform:uppercase}
 h2 .g{color:var(--gold)}
-.big-lead{font-family:var(--body);font-size:clamp(18px,2.4vw,27px);color:var(--muted);max-width:820px;margin-top:26px;line-height:1.5}
-.big-lead b{color:var(--text)}
+.lead{font-family:var(--body);font-size:clamp(18px,2.5vw,29px);color:var(--muted);max-width:880px;margin-top:26px;line-height:1.45}
+.lead b{color:var(--text)}
+.mt{margin-top:26px}
 
-.tricol{display:inline-flex;height:5px;width:130px;margin-top:18px;box-shadow:0 1px 6px rgba(0,0,0,.5)}
-.tricol i{flex:1}.tricol .b{background:var(--bleu)}.tricol .w{background:#EDEDED}.tricol .r{background:var(--rouge)}
-
-/* cover */
+/* ===== COVER ===== */
 .cover{text-align:center;display:flex;flex-direction:column;align-items:center}
-.cover img{height:clamp(140px,24vh,240px);width:auto;filter:drop-shadow(0 10px 26px rgba(0,0,0,.6))}
-.cover .sub{font-family:var(--head);font-weight:600;font-size:clamp(13px,1.8vw,20px);letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-top:20px}
-.cover .slogan{font-family:var(--head);font-weight:700;font-size:clamp(19px,3vw,40px);letter-spacing:.5px;text-transform:uppercase;margin-top:18px;line-height:1.1;max-width:900px}
+.cover img.shield{height:clamp(150px,27vh,280px);width:auto;filter:drop-shadow(0 14px 40px rgba(0,0,0,.7)) drop-shadow(0 0 30px rgba(201,161,78,.18))}
+.cover .sub{font-family:var(--head);font-weight:600;font-size:clamp(13px,1.9vw,21px);letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-top:22px}
+.cover .slogan{font-family:var(--head);font-weight:700;font-size:clamp(22px,3.7vw,54px);letter-spacing:.5px;text-transform:uppercase;margin-top:18px;line-height:1.06;max-width:1000px}
 .cover .slogan .g{color:var(--gold)}
-.cover .base{font-family:var(--body);font-size:clamp(15px,1.8vw,21px);color:var(--muted);letter-spacing:1px;margin-top:14px}
-.cover .aud{margin-top:26px;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#070707;background:var(--gold);padding:8px 18px}
+.cover .base{font-family:var(--disp);font-size:clamp(18px,2.4vw,30px);color:var(--text);letter-spacing:2px;text-transform:uppercase;margin-top:16px}
+.cover .aud{margin-top:24px;font-family:var(--head);font-weight:700;font-size:clamp(12px,1.5vw,15px);letter-spacing:3px;text-transform:uppercase;color:#060606;background:var(--gold);padding:9px 22px}
 
-.alert{display:inline-block;background:var(--yellow);color:#0a0a0a;font-family:var(--head);font-weight:700;
-  font-size:clamp(18px,2.6vw,30px);letter-spacing:.5px;text-transform:uppercase;padding:8px 20px;transform:skewX(-7deg)}
-.alert span{display:inline-block;transform:skewX(7deg)}
+/* statement (constat) */
+.statement{font-family:var(--disp);font-size:clamp(52px,11vw,168px);line-height:.86;letter-spacing:1px;text-transform:uppercase}
+.statement .y{color:var(--yellow)}
+.statement .g{color:var(--gold)}
 
-.plist{margin-top:32px;display:flex;flex-direction:column;max-width:840px}
-.pl{display:flex;gap:20px;padding:17px 0;border-bottom:1px solid var(--line-soft)}
+/* points */
+.plist{margin-top:34px;display:flex;flex-direction:column;max-width:900px}
+.pl{display:flex;gap:24px;padding:19px 0;border-bottom:1px solid var(--line-soft)}
 .pl:last-child{border-bottom:none}
-.pl .n{font-family:var(--disp);font-size:clamp(22px,2.6vw,32px);color:var(--gold);line-height:.9;flex-shrink:0;min-width:52px}
-.pl h3{font-family:var(--head);font-weight:600;font-size:clamp(18px,2.1vw,24px);letter-spacing:1px;text-transform:uppercase;line-height:1.1}
-.pl p{color:var(--muted);font-size:clamp(14px,1.6vw,17px)}
+.pl .n{font-family:var(--disp);font-size:clamp(26px,3vw,40px);color:var(--gold);line-height:.85;flex-shrink:0;min-width:60px}
+.pl h3{font-family:var(--head);font-weight:600;font-size:clamp(19px,2.2vw,27px);letter-spacing:1px;text-transform:uppercase;line-height:1.05}
+.pl p{color:var(--muted);font-size:clamp(15px,1.7vw,19px);margin-top:2px}
 
-.igrid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:36px}
+/* grids */
+.igrid{display:grid;gap:2px;background:var(--line);border:2px solid var(--line);margin-top:38px}
 .g2{grid-template-columns:repeat(2,1fr)}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g4{grid-template-columns:repeat(4,1fr)}
-.g6{grid-template-columns:repeat(6,1fr)}
-.cell{background:#0b0b0b;padding:clamp(20px,2.4vw,32px) clamp(12px,1.6vw,22px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
-.cell svg{width:clamp(26px,3vw,36px);height:clamp(26px,3vw,36px);stroke:var(--gold)}
-.cell .num{font-family:var(--disp);font-size:clamp(40px,5.2vw,64px);line-height:.8;color:var(--text)}
-.cell h3{font-family:var(--head);font-weight:600;font-size:clamp(13px,1.5vw,17px);letter-spacing:1px;text-transform:uppercase;line-height:1.15}
-.cell p{color:var(--muted);font-size:clamp(12px,1.3vw,14px)}
-.cell.tri{position:relative}
-.cell.tri::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--bleu) 0 33.3%,#EDEDED 33.3% 66.6%,var(--rouge) 66.6%)}
+.cell{background:#0a0a0c;padding:clamp(24px,2.8vw,40px) clamp(14px,1.8vw,26px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;transition:background .3s}
+.cell:hover{background:var(--panel)}
+.cell svg{width:clamp(30px,3.4vw,42px);height:clamp(30px,3.4vw,42px);stroke:var(--gold)}
+.cell .num{font-family:var(--disp);font-size:clamp(58px,8.5vw,150px);line-height:.78;color:var(--text)}
+.cell .num.g{color:var(--gold-bright)}
+.cell h3{font-family:var(--head);font-weight:700;font-size:clamp(14px,1.6vw,19px);letter-spacing:1px;text-transform:uppercase;line-height:1.12}
+.cell p{color:var(--muted);font-size:clamp(12px,1.35vw,15px);line-height:1.35}
+.cell.tri-top{position:relative}
+.cell.tri-top::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--bleu) 0 33.34%,var(--blanc) 33.34% 66.67%,var(--rouge) 66.67%)}
 
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center}
-.cols.narrow{grid-template-columns:.85fr 1.15fr}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,72px);align-items:center}
+.cols.narrow{grid-template-columns:.9fr 1.1fr}
 
-.chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.chip{border:1px solid var(--line);background:#0b0b0b;padding:11px 17px;font-family:var(--head);font-weight:600;
-  font-size:clamp(12px,1.4vw,15px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
-.chip.hi{border-color:var(--gold);color:var(--gold)}
+/* chips */
+.chips{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.chip{border:1.5px solid var(--line);background:#0a0a0c;padding:13px 20px;font-family:var(--head);font-weight:600;
+  font-size:clamp(13px,1.5vw,17px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+.chip.hi{border-color:var(--gold);color:var(--gold-bright);box-shadow:0 0 22px -8px var(--gold)}
 
-.ethic{margin-top:30px;font-family:var(--disp);font-size:clamp(24px,3.2vw,40px);letter-spacing:1px;color:var(--gold-bright);line-height:1.05}
-.ethic small{display:block;font-family:var(--body);font-size:clamp(15px,1.7vw,19px);color:var(--muted);letter-spacing:0;text-transform:none;margin-top:10px;font-weight:400}
+/* ethic */
+.ethic{margin-top:32px;font-family:var(--disp);font-size:clamp(28px,4vw,54px);letter-spacing:1px;color:var(--gold-bright);line-height:1;text-transform:uppercase}
+.ethic small{display:block;font-family:var(--body);font-size:clamp(16px,1.8vw,21px);color:var(--muted);letter-spacing:0;text-transform:none;margin-top:14px;font-weight:400;max-width:760px}
 
-.price{font-family:var(--disp);font-size:clamp(90px,13vw,170px);line-height:.8;color:var(--gold-bright)}
-.price small{font-size:.32em;color:var(--gold)}
-.price-note{font-family:var(--head);font-weight:500;font-size:clamp(14px,1.8vw,19px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:18px}
+/* price */
+.price{font-family:var(--disp);font-size:clamp(110px,17vw,230px);line-height:.74;color:var(--gold-bright);text-shadow:0 8px 40px rgba(201,161,78,.25)}
+.price small{font-size:.3em;color:var(--gold)}
+.price-note{font-family:var(--head);font-weight:600;font-size:clamp(15px,1.9vw,21px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:22px}
 
-.quote{font-family:var(--body);font-size:clamp(20px,2.8vw,34px);line-height:1.45;font-weight:400;border-left:3px solid var(--gold);padding-left:26px}
+/* quote */
+.quote{font-family:var(--body);font-size:clamp(22px,3vw,40px);line-height:1.4;font-weight:400;border-left:5px solid;border-image:linear-gradient(180deg,var(--bleu),var(--blanc),var(--rouge)) 1;padding-left:30px;max-width:1000px}
 .quote b{color:var(--gold-bright)}
-.sign{margin-top:26px;display:flex;align-items:center;gap:18px}
-.sign .m{width:54px;height:54px;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--disp);font-size:22px;color:var(--gold)}
-.sign .nm{font-family:var(--disp);font-size:24px;letter-spacing:1px}
-.sign .rl{font-family:var(--head);font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.sign{margin-top:30px;display:flex;align-items:center;gap:20px}
+.sign .m{width:60px;height:60px;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--disp);font-size:26px;color:var(--gold)}
+.sign .nm{font-family:var(--disp);font-size:clamp(24px,2.4vw,30px);letter-spacing:1px}
+.sign .rl{font-family:var(--head);font-weight:500;font-size:clamp(12px,1.3vw,14px);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
 
-.mapwrap{position:relative;border:1px solid var(--line);padding:18px;background:radial-gradient(ellipse at 60% 65%,rgba(201,161,78,.06),transparent 60%),var(--panel);max-width:440px;margin:0 auto;width:100%}
+/* map */
+.mapwrap{position:relative;border:2px solid var(--line);padding:20px;background:radial-gradient(ellipse at 60% 65%,rgba(201,161,78,.07),transparent 60%),var(--panel);max-width:460px;margin:0 auto;width:100%}
 .mapwrap svg{width:100%;height:auto;display:block}
-.fr-outline{fill:rgba(201,161,78,.03);stroke:rgba(201,161,78,.45);stroke-width:1.5;stroke-linejoin:round}
-.nice-dot{fill:var(--gold)}
-.nice-ring{fill:none;stroke:rgba(201,161,78,.6);stroke-width:1.2;transform-box:fill-box;transform-origin:center;animation:np 2.4s ease-out infinite}
-@keyframes np{0%{transform:scale(.5);opacity:.9}100%{transform:scale(3);opacity:0}}
-.c-lab{font-family:var(--head);font-weight:700;font-size:19px;letter-spacing:2px;fill:var(--text)}
-.legend{margin-top:14px;font-family:var(--head);font-weight:500;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px}
-.legend i{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.fr-outline{fill:rgba(201,161,78,.03);stroke:rgba(201,161,78,.5);stroke-width:1.6;stroke-linejoin:round}
+.nice-dot{fill:var(--gold-bright)}
+.nice-ring{fill:none;stroke:var(--gold);stroke-width:1.4;transform-box:fill-box;transform-origin:center;animation:np 2.4s ease-out infinite}
+@keyframes np{0%{transform:scale(.5);opacity:.95}100%{transform:scale(3.2);opacity:0}}
+.c-lab{font-family:var(--disp);font-size:24px;letter-spacing:2px;fill:var(--text)}
+.legend{margin-top:14px;font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.legend i{width:11px;height:11px;border-radius:50%;background:var(--gold-bright)}
 
-.contacts{display:flex;justify-content:center;gap:16px 40px;flex-wrap:wrap;margin-top:36px}
-.contacts a{display:flex;align-items:center;gap:11px;font-family:var(--head);font-weight:600;font-size:clamp(14px,1.7vw,18px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none}
-.contacts svg{width:19px;height:19px;stroke:var(--gold)}
-.mission-big{font-family:var(--disp);font-size:clamp(24px,3.6vw,44px);letter-spacing:2px;color:var(--gold-bright);transform:skewX(-7deg);margin-top:28px;text-align:center}
+/* contacts */
+.contacts{display:flex;justify-content:center;gap:18px 44px;flex-wrap:wrap;margin-top:38px}
+.contacts a{display:flex;align-items:center;gap:12px;font-family:var(--head);font-weight:600;font-size:clamp(15px,1.8vw,19px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;transition:color .2s}
+.contacts a:hover{color:var(--gold-bright)}
+.contacts svg{width:20px;height:20px;stroke:var(--gold)}
+.mission-big{font-family:var(--disp);font-size:clamp(28px,4.4vw,58px);letter-spacing:2px;color:var(--gold-bright);transform:skewX(-7deg);margin-top:30px;text-align:center;text-shadow:0 6px 30px rgba(0,0,0,.5)}
 
-/* chrome */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 26px 16px 34px;pointer-events:none}
-.topbar .brand{display:flex;align-items:center;gap:12px}
-.topbar .brand img{height:34px;width:auto}
+/* ===== CHROME ===== */
+.topbar{position:fixed;top:9px;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 30px;pointer-events:none}
+.topbar .brand{display:flex;align-items:center;gap:13px}
+.topbar .brand img{height:38px;width:auto}
 .topbar .brand b{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
-.topbar .mm{font-family:var(--head);font-weight:500;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.topbar .mm{font-family:var(--head);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
 
-.botbar{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 26px 16px 34px;gap:16px}
-.dots{display:flex;gap:7px;flex-wrap:wrap;max-width:58%}
-.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.16);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.botbar{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 30px;gap:16px}
+.dots{display:flex;gap:7px;flex-wrap:wrap;max-width:56%}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
 .dot:hover{background:var(--gold-deep)}
-.dot.on{background:var(--gold);transform:scale(1.25)}
+.dot.on{background:var(--gold-bright);transform:scale(1.3)}
 .nav{display:flex;align-items:center;gap:10px}
-.counter{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:2px;color:var(--muted);min-width:64px;text-align:center}
-.counter b{color:var(--gold);font-size:16px}
-.nbtn{width:44px;height:44px;border:1px solid var(--line);background:rgba(0,0,0,.4);color:var(--gold);cursor:pointer;display:grid;place-items:center;transition:background .2s,border-color .2s}
-.nbtn:hover{background:var(--gold);color:#070707;border-color:var(--gold)}
-.nbtn svg{width:20px;height:20px}
-.hint{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:15;font-family:var(--head);font-weight:500;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.7;transition:opacity .4s;pointer-events:none;text-align:center}
+.counter{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:2px;color:var(--muted);min-width:66px;text-align:center}
+.counter b{color:var(--gold-bright);font-size:17px}
+.nbtn{width:46px;height:46px;border:1.5px solid var(--line);background:rgba(0,0,0,.4);color:var(--gold);cursor:pointer;display:grid;place-items:center;transition:background .2s,border-color .2s}
+.nbtn:hover{background:var(--gold);color:#060606;border-color:var(--gold)}
+.nbtn svg{width:21px;height:21px}
+.hint{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:15;font-family:var(--head);font-weight:500;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.7;transition:opacity .4s;pointer-events:none;text-align:center}
 .hint.hide{opacity:0}
 .hint kbd{font-family:var(--head);border:1px solid var(--line);border-radius:3px;padding:1px 7px;color:var(--gold);margin:0 2px}
 
-@media(max-width:820px){
-  .cols,.cols.narrow{grid-template-columns:1fr;gap:30px}
-  .g6{grid-template-columns:repeat(3,1fr)}
+/* ===== RESPONSIVE ===== */
+@media(max-width:860px){
+  .cols,.cols.narrow{grid-template-columns:1fr;gap:32px}
   .g4{grid-template-columns:repeat(2,1fr)}
   .g3,.g2{grid-template-columns:1fr}
   .cols .mapwrap{order:2}
   .topbar .mm{display:none}
   .dots{display:none}
+  .corner{display:none}
 }
 @media(max-width:520px){
-  .g6,.g4{grid-template-columns:repeat(2,1fr)}
-  .slide{padding:66px 20px 84px;align-items:flex-start;overflow-y:auto}
-  .counter{min-width:52px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .slide{padding:70px 20px 88px;align-items:flex-start;overflow-y:auto}
+  .counter{min-width:54px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.stg{opacity:1;transform:none}}
 @media print{
   @page{size:1280px 720px;margin:0}
   body{overflow:visible;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .topbar,.botbar,#bar,.hint{display:none!important}
+  .topbar,.botbar,#bar,.hint,.corner{display:none!important}
   .deck{position:static}
   .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;transform:none!important;page-break-after:always;break-after:page;width:1280px;height:720px}
   .stg{opacity:1!important;transform:none!important}
@@ -183,8 +213,9 @@ h2 .g{color:var(--gold)}
 </style>
 </head>
 <body>
+<div class="topstrip"><i class="b"></i><i class="w"></i><i class="r"></i></div>
 <div id="bar"></div>
-<div class="liseré"><i class="b"></i><i class="w"></i><i class="r"></i></div>
+<div class="corner"><svg width="150" height="150" viewBox="0 0 150 150"><g transform="rotate(45 75 75)"><rect x="40" y="-40" width="14" height="150" fill="#0A4DA8"/><rect x="56" y="-40" width="14" height="150" fill="#F5F5F5"/><rect x="72" y="-40" width="14" height="150" fill="#E62A34"/></g></svg></div>
 
 <div class="topbar">
   <div class="brand"><img src="gis-logo.png" alt="GIS"><b>Groupe Intervention Sécurité</b></div>
@@ -194,13 +225,14 @@ h2 .g{color:var(--gold)}
 <div class="deck" id="deck">
 
   <!-- 1. COVER -->
-  <section class="slide cover active">
+  <section class="slide cover glow active">
+    <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner cover">
-      <img class="stg" src="gis-logo.png" alt="Logo GIS">
+      <img class="shield stg" src="gis-logo.png" alt="Logo GIS">
       <div class="sub stg">Groupe Intervention Sécurité</div>
       <div class="slogan stg">L'expérience des forces régaliennes<br><span class="g">au service de votre protection.</span></div>
-      <div class="base stg">Corps d'élite opérationnel privé.</div>
-      <div class="tricol stg"><i class="b"></i><i class="w"></i><i class="r"></i></div>
+      <div class="base stg">Corps d'élite opérationnel privé</div>
+      <div class="stg" style="margin-top:22px"><span class="tband lg"><i class="b"></i><i class="w"></i><i class="r"></i></span></div>
       <div class="aud stg">Offre Particuliers · Nice</div>
     </div>
   </section>
@@ -208,16 +240,17 @@ h2 .g{color:var(--gold)}
   <!-- 2. LE CONSTAT -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">01 · Le constat</div>
-      <div class="alert stg"><span>Trop d'agressions. Agissons ensemble.</span></div>
-      <p class="big-lead stg">Agression, harcèlement, trajet à risque, domicile isolé : entre l'appel et l'arrivée des secours, <b>chaque minute compte</b>. GIS met une protection professionnelle à portée de main, pour vous et vos proches.</p>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>01</b> · Le constat</span></div>
+      <div class="statement stg">Trop<br>d'agressions.</div>
+      <span class="tband stg mt"><i class="b"></i><i class="w"></i><i class="r"></i></span>
+      <p class="lead stg">Entre l'appel et l'arrivée des secours, <b>chaque minute compte</b>. GIS met une protection professionnelle à portée de main, pour vous et vos proches.</p>
     </div>
   </section>
 
   <!-- 3. LA MISSION -->
-  <section class="slide">
+  <section class="slide glow">
     <div class="slide-inner">
-      <div class="tag stg">02 · La mission</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>02</b> · La mission</span></div>
       <h1 class="stg">Une protection<br>qui <span class="g">n'attend pas.</span></h1>
       <div class="plist">
         <div class="pl stg"><span class="n">01</span><div><h3>Présence immédiate</h3><p>Des unités en ronde au cœur de la ville, prêtes à converger vers vous.</p></div></div>
@@ -230,7 +263,7 @@ h2 .g{color:var(--gold)}
   <!-- 4. LE DISPOSITIF -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">03 · Le dispositif</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>03</b> · Le dispositif</span></div>
       <h2 class="stg">Quatre temps. <span class="g">Une intervention.</span></h2>
       <div class="igrid g4 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg><h3>01 · L'alerte</h3><p>Bouton SOS sur l'application ou réservation à l'avance.</p></div>
@@ -241,17 +274,18 @@ h2 .g{color:var(--gold)}
     </div>
   </section>
 
-  <!-- 5. LES HOMMES / RECRUTEMENT -->
-  <section class="slide">
+  <!-- 5. NOS AGENTS -->
+  <section class="slide glow">
+    <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner">
-      <div class="tag stg">04 · Nos agents</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>04</b> · Nos agents</span></div>
       <h1 class="stg">Des experts des<br><span class="g">forces régaliennes.</span></h1>
-      <p class="big-lead stg">Nos agents sont recrutés parmi les <b>professionnels des forces régaliennes</b> (police, gendarmerie, armée). Un recrutement d'exception, sans compromis.</p>
+      <span class="tband lg stg mt"><i class="b"></i><i class="w"></i><i class="r"></i></span>
+      <p class="lead stg">Recrutés parmi les <b>professionnels des forces régaliennes</b> — police, gendarmerie, armée. Un recrutement d'exception, sans compromis.</p>
       <div class="chips stg">
         <span class="chip hi">Expérience minimum 5 ans</span>
         <span class="chip hi">Issus des forces régaliennes</span>
         <span class="chip hi">Exigence sportive (entraînement inclus)</span>
-        <span class="chip">Rigueur professionnelle</span>
         <span class="chip">Caméra embarquée</span>
       </div>
     </div>
@@ -260,7 +294,7 @@ h2 .g{color:var(--gold)}
   <!-- 6. NOS VALEURS -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">05 · Nos valeurs</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>05</b> · Nos valeurs</span></div>
       <h2 class="stg">Droit <span class="g">dans les bottes.</span></h2>
       <div class="chips stg">
         <span class="chip">Rigueur</span><span class="chip">Professionnalisme</span><span class="chip">Loyauté</span>
@@ -273,9 +307,9 @@ h2 .g{color:var(--gold)}
   </section>
 
   <!-- 7. POUR VOUS -->
-  <section class="slide">
+  <section class="slide glow">
     <div class="slide-inner">
-      <div class="tag stg">06 · Pour vous &amp; vos proches</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>06</b> · Pour vous &amp; vos proches</span></div>
       <h2 class="stg">Une protection <span class="g">sur-mesure.</span></h2>
       <div class="igrid g3 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m4 11 8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-6h4v6"/></svg><h3>Domicile &amp; quartier</h3><p>Rondes et intervention à proximité de chez vous.</p></div>
@@ -291,7 +325,7 @@ h2 .g{color:var(--gold)}
   <!-- 8. GIS KIDS -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">07 · GIS Kids</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>07</b> · GIS Kids</span></div>
       <h1 class="stg">La montre qui<br><span class="g">veille sur eux.</span></h1>
       <div class="plist">
         <div class="pl stg"><span class="n">01</span><div><h3>Zone de sécurité &amp; alerte</h3><p>Zone de 100 m, alerte immédiate en cas de sortie de zone, géolocalisation en continu.</p></div></div>
@@ -302,15 +336,15 @@ h2 .g{color:var(--gold)}
   </section>
 
   <!-- 9. L'APPLICATION -->
-  <section class="slide">
+  <section class="slide glow">
     <div class="slide-inner">
-      <div class="tag stg">08 · L'application</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>08</b> · L'application</span></div>
       <h2 class="stg">Un bouton. <span class="g">Le contrôle.</span></h2>
       <div class="igrid g4 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><h3>Bouton SOS</h3><p>Alerte immédiate d'un seul geste.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Géolocalisation &amp; suivi</h3><p>Position et intervention suivies en temps réel.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Géoloc &amp; suivi</h3><p>Position et intervention suivies en temps réel.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><h3>Compte rendu</h3><p>Rapport d'intervention transmis au payeur.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg><h3>Optimisée par l'IA</h3><p>L'intelligence artificielle affine l'affectation des unités.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg><h3>Optimisée par l'IA</h3><p>L'IA affine l'affectation des unités.</p></div>
       </div>
     </div>
   </section>
@@ -318,27 +352,27 @@ h2 .g{color:var(--gold)}
   <!-- 10. L'ACADÉMIE -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">09 · L'académie GIS</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>09</b> · L'académie GIS</span></div>
       <h2 class="stg">Une formation <span class="g">d'exception.</span></h2>
-      <p class="big-lead stg">Un centre de formation interne — <b>académie nationale</b> — qui entretient l'excellence de nos agents.</p>
+      <p class="lead stg">Un centre de formation interne — <b>académie nationale</b> — qui entretient l'excellence de nos agents.</p>
       <div class="igrid g3 stg">
-        <div class="cell tri"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 20h18M6 20V10l6-5 6 5v10M9 20v-5h6v5"/></svg><h3>Formation sur le terrain</h3><p>Mise en situation réelle, gestion de crise, maîtrise de la force.</p></div>
-        <div class="cell tri"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><h3>Formation technique</h3><p>Outils, communication, protocoles et matériel de pointe.</p></div>
-        <div class="cell tri"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg><h3>Intelligence artificielle</h3><p>Maîtrise de l'application dédiée et des outils augmentés par l'IA.</p></div>
+        <div class="cell tri-top"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 20h18M6 20V10l6-5 6 5v10M9 20v-5h6v5"/></svg><h3>Formation sur le terrain</h3><p>Mise en situation réelle, gestion de crise, maîtrise de la force.</p></div>
+        <div class="cell tri-top"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><h3>Formation technique</h3><p>Outils, communication, protocoles et matériel de pointe.</p></div>
+        <div class="cell tri-top"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg><h3>Intelligence artificielle</h3><p>Maîtrise de l'application et des outils augmentés par l'IA.</p></div>
       </div>
     </div>
   </section>
 
   <!-- 11. LE MATÉRIEL -->
-  <section class="slide">
+  <section class="slide glow">
     <div class="slide-inner">
-      <div class="tag stg">10 · Le matériel</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>10</b> · Le matériel</span></div>
       <h2 class="stg">L'équipement <span class="g">d'un corps d'élite.</span></h2>
       <div class="igrid g4 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M5.5 17h6l4-7h3M11 10h4"/></svg><h3>BMW R 1250 GS</h3><p>Noir mat, équipées complètes.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M5 17h14M6 17l-1-5 2-4h10l2 4-1 5M8 12h8"/><circle cx="8" cy="18" r="1.4"/><circle cx="16" cy="18" r="1.4"/></svg><h3>Volvo XC90</h3><p>Noir, pour les dispositifs renforcés.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><path d="M9.5 9.5 5 5M14.5 9.5 19 5M9.5 14.5 5 19M14.5 14.5 19 19"/><circle cx="4" cy="4" r="1.6"/><circle cx="20" cy="4" r="1.6"/><circle cx="4" cy="20" r="1.6"/><circle cx="20" cy="20" r="1.6"/></svg><h3>Drone DJI</h3><p>Surveillance aérienne &amp; levée de doute.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2.5" y="7" width="15" height="10" rx="2"/><circle cx="10" cy="12" r="3"/><path d="M17.5 10.5 21.5 8v8l-4-2.5"/></svg><h3>Caméra GoPro</h3><p>Filmé embarqué : transparence &amp; preuve.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2.5" y="7" width="15" height="10" rx="2"/><circle cx="10" cy="12" r="3"/><path d="M17.5 10.5 21.5 8v8l-4-2.5"/></svg><h3>Caméra GoPro</h3><p>Filmé embarqué : transparence.</p></div>
       </div>
     </div>
   </section>
@@ -346,33 +380,34 @@ h2 .g{color:var(--gold)}
   <!-- 12. L'ORGANISATION -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">11 · L'organisation</div>
-      <h2 class="stg">Une présence <span class="g">24h/24, 7j/7.</span></h2>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>11</b> · L'organisation</span></div>
+      <h2 class="stg">Présents <span class="g">24h/24, 7j/7.</span></h2>
       <div class="igrid g4 stg">
-        <div class="cell"><div class="num">50</div><h3>Agents (objectif)</h3><p>Un effectif d'élite en montée en charge.</p></div>
-        <div class="cell"><div class="num">2</div><h3>Équipes en rotation</h3><p>Jour 6h–20h &amp; nuit 20h–6h.</p></div>
-        <div class="cell"><div class="num">10</div><h3>Motos en ronde</h3><p>+ 3 en repos : la relève est toujours prête.</p></div>
-        <div class="cell"><div class="num">24/7</div><h3>Couverture continue</h3><p>Jamais de rupture de protection.</p></div>
+        <div class="cell"><div class="num g">50</div><h3>Agents (objectif)</h3><p>Un effectif d'élite en montée en charge.</p></div>
+        <div class="cell"><div class="num g">2</div><h3>Équipes en rotation</h3><p>Jour 6h–20h &amp; nuit 20h–6h.</p></div>
+        <div class="cell"><div class="num g">10</div><h3>Motos en ronde</h3><p>+ 3 en repos : la relève est prête.</p></div>
+        <div class="cell"><div class="num g">24/7</div><h3>Couverture continue</h3><p>Jamais de rupture de protection.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- 13. LE DÉPLOIEMENT NICE -->
-  <section class="slide">
+  <!-- 13. DÉPLOIEMENT NICE -->
+  <section class="slide glow">
     <div class="slide-inner">
-      <div class="tag stg">12 · Le déploiement</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>12</b> · Le déploiement</span></div>
       <div class="cols narrow">
         <div>
           <h1 class="stg">Lancement<br><span class="g">à Nice.</span></h1>
-          <p class="big-lead stg">GIS s'implante d'abord sur la <b>Côte d'Azur</b> — un territoire idéal pour un déploiement <b>rapide et réactif</b>, avant l'extension à d'autres villes.</p>
+          <span class="tband stg mt"><i class="b"></i><i class="w"></i><i class="r"></i></span>
+          <p class="lead stg">GIS s'implante d'abord sur la <b>Côte d'Azur</b> — un territoire idéal pour un déploiement <b>rapide et réactif</b>, avant l'extension à d'autres villes.</p>
         </div>
         <div class="mapwrap stg" aria-hidden="true">
           <svg viewBox="0 0 640 615" fill="none">
             <path class="fr-outline" d="M335,65 L314,70 304,82 300,111 244,150 174,137 176,177 180,196 128,203 50,210 52,230 106,248 152,273 194,333 196,363 192,415 178,479 169,486 220,508 300,533 362,533 360,505 388,483 432,487 455,494 477,500 506,490 531,467 540,463 516,429 522,396 515,349 480,325 482,297 540,256 556,199 568,178 520,166 488,151 440,138 433,115 400,106 364,84 Z"/>
             <path class="fr-outline" d="M614,505 L590,529 590,564 606,593 611,582 Z"/>
             <circle class="nice-ring" cx="508" cy="470" r="16"/>
-            <circle class="nice-dot" cx="508" cy="470" r="7"/>
-            <text class="c-lab" x="492" y="454" text-anchor="end">NICE</text>
+            <circle class="nice-dot" cx="508" cy="470" r="7.5"/>
+            <text class="c-lab" x="492" y="452" text-anchor="end">NICE</text>
           </svg>
           <div class="legend"><i></i>Ville de lancement — Sud</div>
         </div>
@@ -383,7 +418,7 @@ h2 .g{color:var(--gold)}
   <!-- 14. QUESTIONS / RÉPONSES -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">13 · Vos questions, nos réponses</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>13</b> · Vos questions, nos réponses</span></div>
       <h2 class="stg">Un service <span class="g">encadré.</span></h2>
       <div class="igrid g3 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>Autorisation CNAPS</h3><p>Service privé de sécurité, dans le respect strict du cadre légal.</p></div>
@@ -393,21 +428,22 @@ h2 .g{color:var(--gold)}
     </div>
   </section>
 
-  <!-- 15. LE PRIX -->
-  <section class="slide">
+  <!-- 15. L'OFFRE -->
+  <section class="slide glow">
+    <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner cover">
-      <div class="tag stg" style="align-self:center">14 · L'offre</div>
-      <div class="price stg">50<small>€ / heure</small></div>
+      <div class="kick stg" style="align-self:center"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>14</b> · L'offre</span></div>
+      <div class="price stg">50<small>€ / h</small></div>
       <div class="price-note stg">Sans engagement · Réservation à l'avance possible</div>
-      <p class="big-lead stg" style="text-align:center;margin-left:auto;margin-right:auto"><b>Devis sur-mesure</b> pour vos événements privés (soirées, réceptions, anniversaires).</p>
-      <div class="tricol stg" style="align-self:center"><i class="b"></i><i class="w"></i><i class="r"></i></div>
+      <p class="lead stg" style="text-align:center;margin-left:auto;margin-right:auto"><b>Devis sur-mesure</b> pour vos événements privés — soirées, réceptions, anniversaires.</p>
+      <div class="stg" style="margin-top:22px"><span class="tband lg"><i class="b"></i><i class="w"></i><i class="r"></i></span></div>
     </div>
   </section>
 
   <!-- 16. LE FONDATEUR -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="tag stg">15 · Le fondateur</div>
+      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>15</b> · Le fondateur</span></div>
       <blockquote class="quote stg">« J'ai passé <b>22 ans au sein de la police</b>. J'ai vu ce que devient une situation quand l'aide arrive trop tard. GIS existe pour une seule raison : que la protection arrive <b>à temps, à chaque fois</b>. »</blockquote>
       <div class="sign stg">
         <span class="m">O</span>
@@ -417,10 +453,12 @@ h2 .g{color:var(--gold)}
   </section>
 
   <!-- 17. CLÔTURE -->
-  <section class="slide">
+  <section class="slide cover glow">
+    <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner cover">
-      <img class="stg" src="gis-logo.png" alt="GIS" style="height:clamp(110px,18vh,180px)">
-      <div class="slogan stg" style="font-family:var(--head);font-weight:700;font-size:clamp(20px,3.4vw,42px);text-transform:uppercase;margin-top:20px;max-width:900px;line-height:1.1">L'expérience des forces régaliennes <span class="g">au service de votre protection.</span></div>
+      <img class="shield stg" src="gis-logo.png" alt="GIS" style="height:clamp(120px,20vh,200px)">
+      <div class="slogan stg" style="margin-top:20px">L'expérience des forces régaliennes <span class="g">au service de votre protection.</span></div>
+      <div class="stg" style="margin-top:20px"><span class="tband lg"><i class="b"></i><i class="w"></i><i class="r"></i></span></div>
       <div class="contacts stg">
         <a href="tel:+33600000000"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>06 00 00 00 00</a>
         <a href="https://www.gis-securite.fr"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>www.gis-securite.fr</a>
