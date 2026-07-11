@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="gis-logo.png">
+<title>GIS — Présentation (diaporama)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#070707;--black-2:#0C0C0C;--panel:#101010;--panel-2:#151515;
+  --line:rgba(201,161,78,.22);--line-soft:rgba(255,255,255,.06);
+  --gold:#C9A14E;--gold-bright:#EFC65A;--gold-deep:#9A7A35;--yellow:#E3B53B;
+  --text:#F3F0E8;--muted:#9C988C;
+  --disp:'Anton',sans-serif;--head:'Oswald',sans-serif;--body:'Barlow Semi Condensed',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--black);color:var(--text);font-family:var(--body);
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:#070707}
+
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---- deck ---- */
+.deck{position:fixed;inset:0;overflow:hidden}
+.slide{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:clamp(30px,5vw,80px);opacity:0;visibility:hidden;
+  transform:translateY(24px) scale(.99);transition:opacity .5s ease,transform .5s ease,visibility .5s;
+  z-index:1;
+}
+.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.slide-inner{width:100%;max-width:1180px;position:relative;z-index:2}
+
+/* section-specific backgrounds */
+.slide.dark2{background:var(--black-2)}
+.slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 90% 70% at 50% 0%,transparent 55%,rgba(0,0,0,.6) 100%)}
+
+/* ---- stagger ---- */
+.stg{opacity:0;transform:translateY(18px)}
+.slide.active .stg{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+.slide.active .stg:nth-child(1){transition-delay:.12s}
+.slide.active .stg:nth-child(2){transition-delay:.20s}
+.slide.active .stg:nth-child(3){transition-delay:.28s}
+.slide.active .stg:nth-child(4){transition-delay:.36s}
+.slide.active .stg:nth-child(5){transition-delay:.44s}
+.slide.active .stg:nth-child(6){transition-delay:.52s}
+
+/* ---- shared type ---- */
+.tag{display:inline-flex;align-items:center;gap:14px;font-family:var(--head);font-weight:600;
+  font-size:clamp(12px,1.4vw,15px);letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
+.tag::before{content:"";width:44px;height:3px;background:var(--gold)}
+h1{font-family:var(--disp);font-size:clamp(46px,7.5vw,104px);line-height:.92;letter-spacing:1px;text-transform:uppercase}
+h1 .g{color:var(--gold)}
+h2{font-family:var(--head);font-weight:700;font-size:clamp(34px,5.4vw,68px);line-height:1;letter-spacing:1px;text-transform:uppercase}
+h2 .g{color:var(--gold)}
+.big-lead{font-family:var(--body);font-size:clamp(18px,2.4vw,27px);color:var(--muted);max-width:800px;margin-top:26px;line-height:1.5}
+.big-lead b{color:var(--text)}
+
+/* hazard */
+.hz{height:8px;background:repeating-linear-gradient(45deg,var(--gold) 0 14px,#0a0a0a 14px 28px);opacity:.9;margin:26px 0;max-width:220px}
+
+/* ---- cover ---- */
+.cover{text-align:center;display:flex;flex-direction:column;align-items:center}
+.cover img{height:clamp(150px,26vh,260px);width:auto;filter:drop-shadow(0 10px 26px rgba(0,0,0,.6))}
+.cover .sub{font-family:var(--head);font-weight:600;font-size:clamp(14px,2vw,22px);letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-top:22px}
+.cover .tl{font-family:var(--disp);font-size:clamp(30px,4.4vw,60px);letter-spacing:1px;text-transform:uppercase;margin-top:16px}
+.cover .tl .g{color:var(--gold)}
+.cover .mission{font-family:var(--body);font-size:clamp(15px,1.8vw,20px);color:var(--muted);letter-spacing:1px;margin-top:16px}
+.cover .aud{margin-top:30px;font-family:var(--head);font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#070707;background:var(--gold);padding:8px 18px}
+
+/* alert */
+.alert{display:inline-block;background:var(--yellow);color:#0a0a0a;font-family:var(--head);font-weight:700;
+  font-size:clamp(18px,2.6vw,30px);letter-spacing:.5px;text-transform:uppercase;padding:8px 20px;transform:skewX(-7deg)}
+.alert span{display:inline-block;transform:skewX(7deg)}
+
+/* points list */
+.plist{margin-top:34px;display:flex;flex-direction:column;gap:0;max-width:820px}
+.pl{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--line-soft)}
+.pl:last-child{border-bottom:none}
+.pl .n{font-family:var(--disp);font-size:clamp(22px,2.6vw,32px);color:var(--gold);line-height:.9;flex-shrink:0;min-width:52px}
+.pl h3{font-family:var(--head);font-weight:600;font-size:clamp(18px,2.1vw,24px);letter-spacing:1px;text-transform:uppercase;line-height:1.1}
+.pl p{color:var(--muted);font-size:clamp(14px,1.6vw,17px)}
+
+/* icon grid */
+.igrid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:38px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g6{grid-template-columns:repeat(6,1fr)}
+.cell{background:#0b0b0b;padding:clamp(20px,2.4vw,32px) clamp(12px,1.6vw,22px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.cell svg{width:clamp(26px,3vw,36px);height:clamp(26px,3vw,36px);stroke:var(--gold)}
+.cell .num{font-family:var(--disp);font-size:clamp(42px,5.5vw,68px);line-height:.8;color:var(--text)}
+.cell h3{font-family:var(--head);font-weight:600;font-size:clamp(13px,1.5vw,17px);letter-spacing:1px;text-transform:uppercase;line-height:1.15}
+.cell p{color:var(--muted);font-size:clamp(12px,1.3vw,14px)}
+
+/* two-column */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center}
+.cols.narrow{grid-template-columns:.8fr 1.2fr}
+
+/* founder */
+.quote{font-family:var(--body);font-size:clamp(20px,2.8vw,34px);line-height:1.45;font-weight:400;border-left:3px solid var(--gold);padding-left:26px}
+.quote b{color:var(--gold-bright)}
+.sign{margin-top:26px;display:flex;align-items:center;gap:18px}
+.sign .m{width:54px;height:54px;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--disp);font-size:22px;color:var(--gold)}
+.sign .nm{font-family:var(--disp);font-size:24px;letter-spacing:1px}
+.sign .rl{font-family:var(--head);font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+/* mil box (unités) */
+.milrow{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.chip{border:1px solid var(--line);background:#0b0b0b;padding:12px 18px;font-family:var(--head);font-weight:600;font-size:clamp(12px,1.4vw,15px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+
+/* France map */
+.mapwrap{position:relative;border:1px solid var(--line);padding:20px;background:radial-gradient(ellipse at 45% 40%,rgba(201,161,78,.05),transparent 65%),var(--panel)}
+.mapwrap svg{width:100%;height:auto;display:block}
+.fr-outline{fill:rgba(201,161,78,.03);stroke:rgba(201,161,78,.45);stroke-width:1.5;stroke-linejoin:round}
+.route{stroke:var(--gold);stroke-width:1.5;stroke-dasharray:6 6;animation:rdash 1.6s linear infinite}
+@keyframes rdash{to{stroke-dashoffset:-24}}
+.c-dot{fill:var(--gold)}
+.c-dot.pending{fill:#15181F;stroke:var(--muted);stroke-width:1.5}
+.c-lab{font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:2px;fill:var(--text)}
+.c-lab.pending{fill:var(--muted)}
+.legend{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-family:var(--head);font-weight:500;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:9px}
+.legend i{width:9px;height:9px;border-radius:50%}
+.legend .on{background:var(--gold)}
+.legend .off{border:1px solid var(--muted)}
+
+/* closing contacts */
+.contacts{display:flex;justify-content:center;gap:16px 40px;flex-wrap:wrap;margin-top:38px}
+.contacts a{display:flex;align-items:center;gap:11px;font-family:var(--head);font-weight:600;font-size:clamp(14px,1.7vw,18px);letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none}
+.contacts svg{width:19px;height:19px;stroke:var(--gold)}
+.mission-big{font-family:var(--disp);font-size:clamp(24px,3.6vw,44px);letter-spacing:2px;color:var(--gold-bright);transform:skewX(-7deg);margin-top:30px;text-align:center}
+
+/* ============ CHROME ============ */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 26px;pointer-events:none}
+.topbar .brand{display:flex;align-items:center;gap:12px}
+.topbar .brand img{height:34px;width:auto}
+.topbar .brand b{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.topbar .mm{font-family:var(--head);font-weight:500;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+#bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));z-index:30;transition:width .4s ease;box-shadow:0 0 10px var(--gold)}
+
+.botbar{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 26px;gap:16px}
+.dots{display:flex;gap:7px;flex-wrap:wrap;max-width:60%}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.16);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.dot:hover{background:var(--gold-deep)}
+.dot.on{background:var(--gold);transform:scale(1.25)}
+.nav{display:flex;align-items:center;gap:10px}
+.counter{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:2px;color:var(--muted);min-width:64px;text-align:center}
+.counter b{color:var(--gold);font-size:16px}
+.nbtn{width:44px;height:44px;border:1px solid var(--line);background:rgba(0,0,0,.4);color:var(--gold);cursor:pointer;
+  display:grid;place-items:center;transition:background .2s,border-color .2s}
+.nbtn:hover{background:var(--gold);color:#070707;border-color:var(--gold)}
+.nbtn svg{width:20px;height:20px}
+.nbtn.fs{margin-left:6px}
+
+.hint{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:15;font-family:var(--head);font-weight:500;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.7;transition:opacity .4s;pointer-events:none;text-align:center}
+.hint.hide{opacity:0}
+.hint kbd{font-family:var(--head);border:1px solid var(--line);border-radius:3px;padding:1px 7px;color:var(--gold);margin:0 2px}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:820px){
+  .cols,.cols.narrow{grid-template-columns:1fr;gap:30px}
+  .g6{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr}
+  .cols .mapwrap{order:2}
+  .topbar .mm{display:none}
+  .dots{display:none}
+  .cover .mono{display:none}
+}
+@media(max-width:520px){
+  .g6,.g4{grid-template-columns:repeat(2,1fr)}
+  .slide{padding:66px 20px 84px;align-items:flex-start;overflow-y:auto}
+  .counter{min-width:52px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .stg{opacity:1;transform:none}
+}
+
+/* ============ PRINT / PDF ============ */
+@media print{
+  @page{size:1280px 720px;margin:0}
+  body{overflow:visible;background:#070707;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .topbar,.botbar,#bar,.hint{display:none!important}
+  .deck{position:static}
+  .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;transform:none!important;
+    page-break-after:always;break-after:page;width:1280px;height:720px}
+  .stg{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="topbar">
+  <div class="brand"><img src="gis-logo.png" alt="GIS"><b>Groupe Intervention Sécurité</b></div>
+  <div class="mm">Votre sécurité, notre mission</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide cover active">
+    <div class="slide-inner cover">
+      <img class="stg" src="gis-logo.png" alt="Logo GIS — Groupe Intervention Sécurité">
+      <div class="sub stg">Groupe Intervention Sécurité</div>
+      <div class="tl stg">Protéger <span class="g">·</span> Intervenir <span class="g">·</span> Sécuriser</div>
+      <div class="mission stg">Une présence, une réponse, une protection.</div>
+      <div class="aud stg">À l'attention des élus &amp; pouvoirs publics</div>
+    </div>
+  </section>
+
+  <!-- 2. LE CONSTAT -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">01 · Le constat</div>
+      <div class="alert stg"><span>Trop d'agressions. Agissons ensemble.</span></div>
+      <p class="big-lead stg">Agression, harcèlement de rue, trajet à risque : entre l'appel et l'arrivée des secours, <b>chaque minute compte</b>. Un vide que la sécurité privée peut aider à combler, en appui des forces publiques.</p>
+    </div>
+  </section>
+
+  <!-- 3. LA MISSION -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">02 · La mission</div>
+      <h1 class="stg">Une protection<br>qui <span class="g">n'attend pas.</span></h1>
+      <div class="plist">
+        <div class="pl stg"><span class="n">01</span><div><h3>Présence immédiate</h3><p>Des unités en patrouille au cœur des villes, prêtes à converger vers le point d'alerte.</p></div></div>
+        <div class="pl stg"><span class="n">02</span><div><h3>Mobilité absolue</h3><p>La moto s'affranchit du trafic : l'intervention arrive là où une voiture ne passe plus.</p></div></div>
+        <div class="pl stg"><span class="n">03</span><div><h3>Dissuasion maîtrisée</h3><p>Deux agents expérimentés, tenue noire, moto noire : une présence qui calme la situation.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LE DISPOSITIF -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">03 · Le dispositif</div>
+      <h2 class="stg">Quatre temps. <span class="g">Une intervention.</span></h2>
+      <div class="igrid g4 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg><h3>01 · L'alerte</h3><p>Bouton d'intervention ou réservation à l'avance.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>02 · Géolocalisation</h3><p>Position transmise en temps réel à l'unité la plus proche.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg><h3>03 · Déploiement</h3><p>Deux agents tracent vers le client sans subir le trafic.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>04 · Protection</h3><p>Protection rapprochée jusqu'à la mise en sécurité.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. LES UNITÉS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">04 · Les unités</div>
+      <h1 class="stg">Des hommes<br><span class="g">d'expérience.</span></h1>
+      <p class="big-lead stg">Chaque moto embarque un binôme aguerri — <b>anciens militaires et anciens combattants</b> — formé à la gestion de crise et à la maîtrise de la force. Caméra embarquée sur tous les agents : transparence et preuve légale.</p>
+      <div class="milrow stg">
+        <span class="chip">Discipline</span><span class="chip">Expérience</span><span class="chip">Loyauté</span>
+        <span class="chip">Professionnalisme</span><span class="chip">Binôme systématique</span><span class="chip">Caméra embarquée</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. LA FLOTTE -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">05 · La flotte</div>
+      <h2 class="stg">Du matériel. <span class="g">Des hommes.</span></h2>
+      <div class="igrid g4 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M5.5 17h6l4-7h3M11 10h4"/></svg><div class="num" data-count="10">10</div><h3>Motos BMW en duo</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="9" cy="7.5" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M15.5 20c0-2 .8-3.6 2.3-4.4"/></svg><div class="num" data-count="20">20</div><h3>Agents en rotation</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="5" cy="17" r="3.2"/><circle cx="19" cy="17" r="3.2"/><path d="M5 17l3-7h7l3 7M8 10V7h4"/></svg><div class="num" data-count="1">1</div><h3>Quad tout-terrain</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><path d="M9.5 9.5 5 5M14.5 9.5 19 5M9.5 14.5 5 19M14.5 14.5 19 19"/><circle cx="4" cy="4" r="1.6"/><circle cx="20" cy="4" r="1.6"/><circle cx="4" cy="20" r="1.6"/><circle cx="20" cy="20" r="1.6"/></svg><div class="num" data-count="1">1</div><h3>Drone — levée de doute</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. LES CAPACITÉS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">06 · Les capacités</div>
+      <h2 class="stg">Un service <span class="g">complet.</span></h2>
+      <div class="igrid g3 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><h3>Intervention 24h/24 — 7j/7</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Géolocalisation temps réel</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><h3>Alarme &amp; levée de doute</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg><h3>Surveillance par drone</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2.5" y="7" width="15" height="10" rx="2"/><circle cx="10" cy="12" r="3"/><path d="M17.5 10.5 21.5 8v8l-4-2.5"/></svg><h3>Caméra embarquée</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><h3>Discrétion &amp; efficacité</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. POUR QUI -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">07 · Pour qui ?</div>
+      <h2 class="stg">Une protection pour <span class="g">chacun.</span></h2>
+      <div class="igrid g6 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m4 11 8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-6h4v6"/></svg><h3>Particuliers</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="M12 8.5c-1.2-1.4-3.5-.8-3.5 1.2 0 1.6 2 3 3.5 4 1.5-1 3.5-2.4 3.5-4 0-2-2.3-2.6-3.5-1.2Z"/></svg><h3>Femmes sous protection</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c0-3 2.4-5 5.5-5s5.5 2 5.5 5"/></svg><h3>Enfants — GIS Kids</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 9h16M5 9V5h14v4M6 9v11h12V9"/><path d="M10 20v-5h4v5"/></svg><h3>Commerces &amp; entreprises</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.5 6.5 0 0 0 9.5 9.5Z"/></svg><h3>Établissements de nuit</h3></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/></svg><h3>Événements privés</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. TECHNOLOGIE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">08 · La technologie</div>
+      <h2 class="stg">Un bouton. <span class="g">Trois écrans.</span></h2>
+      <div class="igrid g3 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><h3>Application GIS</h3><p>Bouton SOS, géolocalisation, envoi de l'équipe, alerte des proches &amp; autorités.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="8" y="6" width="8" height="12" rx="3"/><path d="M10 6V3.5h4M10 18v2.5h4"/><path d="M12 10v2.5l1.5 1"/></svg><h3>GIS Kids</h3><p>Montre connectée enfants : zone de sécurité 100 m, alerte de sortie de zone, géolocalisation.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><h3>Site web interactif</h3><p>Réservation à l'heure ou à la journée, suivi des interventions, espace client sécurisé.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. DÉPLOIEMENT -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">09 · Le déploiement</div>
+      <div class="cols narrow">
+        <div>
+          <h2 class="stg">Les grandes villes,<br><span class="g">une à une.</span></h2>
+          <p class="big-lead stg">Un déploiement progressif, ville par ville, au plus près des besoins locaux. <b>Paris et Le Mans</b> au lancement ; d'autres métropoles à l'étude.</p>
+        </div>
+        <div class="mapwrap stg" aria-hidden="true">
+          <svg viewBox="0 0 640 615" fill="none">
+            <path class="fr-outline" d="M335,65 L314,70 304,82 300,111 244,150 174,137 176,177 180,196 128,203 50,210 52,230 106,248 152,273 194,333 196,363 192,415 178,479 169,486 220,508 300,533 362,533 360,505 388,483 432,487 455,494 477,500 506,490 531,467 540,463 516,429 522,396 515,349 480,325 482,297 540,256 556,199 568,178 520,166 488,151 440,138 433,115 400,106 364,84 Z"/>
+            <path class="fr-outline" d="M614,505 L590,529 590,564 606,593 611,582 Z"/>
+            <line class="route" x1="334" y1="185" x2="248" y2="232"/>
+            <g><circle class="c-dot" cx="334" cy="185" r="6"/><text class="c-lab" x="350" y="179">PARIS</text></g>
+            <g><circle class="c-dot" cx="248" cy="232" r="6"/><text class="c-lab" x="232" y="262" text-anchor="end">LE MANS</text></g>
+            <g><circle class="c-dot pending" cx="434" cy="354" r="5.5"/><text class="c-lab pending" x="450" y="360">LYON</text></g>
+            <g><circle class="c-dot pending" cx="217" cy="405" r="5.5"/><text class="c-lab pending" x="201" y="411" text-anchor="end">BORDEAUX</text></g>
+            <g><circle class="c-dot pending" cx="452" cy="480" r="5.5"/><text class="c-lab pending" x="440" y="464" text-anchor="end">MARSEILLE</text></g>
+          </svg>
+          <div class="legend"><span><i class="on"></i>Lancement confirmé</span><span><i class="off"></i>À l'étude</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. LE PARTENARIAT -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">10 · Le partenariat</div>
+      <h1 class="stg">En appui des<br><span class="g">pouvoirs publics.</span></h1>
+      <div class="plist">
+        <div class="pl stg"><span class="n">01</span><div><h3>Jamais en substitution</h3><p>Une présence dissuasive et rapide, en complément de l'action des forces de l'ordre.</p></div></div>
+        <div class="pl stg"><span class="n">02</span><div><h3>Au plus près des territoires</h3><p>Un dispositif déployable ville par ville, adapté aux réalités locales de sécurité.</p></div></div>
+        <div class="pl stg"><span class="n">03</span><div><h3>Un cadre légal strict</h3><p>Autorisation CNAPS, conformité RGPD, action en lien avec les autorités compétentes.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. LE CADRE -->
+  <section class="slide dark2">
+    <div class="slide-inner">
+      <div class="tag stg">11 · Le cadre</div>
+      <h2 class="stg">Service privé. <span class="g">Cadre strict.</span></h2>
+      <div class="igrid g3 stg">
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg><h3>Autorités compétentes</h3><p>Ministère de l'Intérieur, Préfecture, Police nationale.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>Autorisation CNAPS</h3><p>Service privé de sécurité, respect strict du cadre légal.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><h3>RGPD conforme</h3><p>Données sécurisées et confidentielles, captation encadrée.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. LE FONDATEUR -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="tag stg">12 · Le fondateur</div>
+      <blockquote class="quote stg">« J'ai passé <b>27 ans au sein de la police</b>. J'ai vu ce que devient une situation quand l'aide arrive trop tard. GIS existe pour une seule raison : que la protection arrive <b>à temps, à chaque fois</b>. »</blockquote>
+      <div class="sign stg">
+        <span class="m">O</span>
+        <div><div class="nm">Olivier</div><div class="rl">Fondateur — 27 ans de service dans la police</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. CLÔTURE -->
+  <section class="slide dark2">
+    <div class="slide-inner cover">
+      <img class="stg" src="gis-logo.png" alt="GIS" style="height:clamp(110px,18vh,180px)">
+      <h2 class="stg" style="margin-top:22px;text-align:center">Sécurisons vos territoires <span class="g">ensemble.</span></h2>
+      <div class="contacts stg">
+        <a href="tel:+33600000000"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>06 00 00 00 00</a>
+        <a href="https://www.gis-securite.fr"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>www.gis-securite.fr</a>
+        <a href="mailto:contact@gis-securite.fr"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>contact@gis-securite.fr</a>
+      </div>
+      <div class="mission-big stg">Votre sécurité, notre mission.</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hint" id="hint">Naviguez avec <kbd>←</kbd> <kbd>→</kbd> · <kbd>F</kbd> plein écran · clic / glissement</div>
+
+<div class="botbar">
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <span class="counter" id="counter"><b>1</b> / 14</span>
+    <button class="nbtn" id="prev" aria-label="Précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button class="nbtn" id="next" aria-label="Suivant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button class="nbtn fs" id="fs" aria-label="Plein écran"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  const bar=document.getElementById('bar');
+  const counter=document.getElementById('counter');
+  const dotsWrap=document.getElementById('dots');
+  const hint=document.getElementById('hint');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let i=0;
+
+  // dots
+  slides.forEach((_,k)=>{
+    const b=document.createElement('button');
+    b.className='dot';b.setAttribute('aria-label','Slide '+(k+1));
+    b.addEventListener('click',e=>{e.stopPropagation();go(k)});
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+
+  function animateCounts(slide){
+    slide.querySelectorAll('[data-count]').forEach(el=>{
+      const target=+el.dataset.count;
+      if(reduced){el.textContent=target;return}
+      const t0=performance.now(),dur=1100;
+      (function tick(t){const p=Math.min((t-t0)/dur,1);el.textContent=Math.round(target*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick)})(t0);
+    });
+  }
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    bar.style.width=((i+1)/total*100)+'%';
+    counter.innerHTML='<b>'+(i+1)+'</b> / '+total;
+    animateCounts(slides[i]);
+    location.hash=i+1;
+  }
+  const next=()=>go(i+1), prev=()=>go(i-1);
+
+  document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();next()});
+  document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();prev()});
+  document.getElementById('fs').addEventListener('click',e=>{e.stopPropagation();toggleFs()});
+
+  function toggleFs(){
+    if(!document.fullscreenElement){(document.documentElement.requestFullscreen||function(){}).call(document.documentElement)}
+    else{(document.exitFullscreen||function(){}).call(document)}
+  }
+
+  // keyboard
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next()}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev()}
+    else if(e.key==='Home'){go(0)}
+    else if(e.key==='End'){go(total-1)}
+    else if(e.key==='f'||e.key==='F'){toggleFs()}
+  });
+
+  // click to advance (ignore links/buttons)
+  document.getElementById('deck').addEventListener('click',e=>{
+    if(e.target.closest('a,button'))return;
+    next();
+  });
+
+  // swipe
+  let x0=null,y0=null;
+  addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+  addEventListener('touchend',e=>{
+    if(x0===null)return;
+    const dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev()}
+    x0=null;
+  },{passive:true});
+
+  // hide hint after first move
+  ['keydown','click','touchstart'].forEach(ev=>addEventListener(ev,()=>hint.classList.add('hide'),{once:true}));
+  setTimeout(()=>hint.classList.add('hide'),6000);
+
+  // deep-link via hash
+  const start=parseInt(location.hash.replace('#',''),10);
+  go(start>=1&&start<=total?start-1:0);
+})();
+</script>
+</body>
+</html>
