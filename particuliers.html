@@ -26,12 +26,9 @@ body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opa
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ===== TRICOLORE — signature ===== */
-.topstrip{position:fixed;top:0;left:0;right:0;height:9px;z-index:32;display:flex}
+.topstrip{position:fixed;top:0;left:0;right:0;height:13px;z-index:32;display:flex;box-shadow:0 2px 10px rgba(0,0,0,.5)}
 .topstrip i{flex:1}.topstrip .b{background:var(--bleu)}.topstrip .w{background:var(--blanc)}.topstrip .r{background:var(--rouge)}
-#bar{position:fixed;top:9px;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));z-index:31;transition:width .4s ease;box-shadow:0 0 12px var(--gold)}
-/* chevron tricolore décoratif en haut à droite */
-.corner{position:fixed;top:9px;right:0;z-index:23;pointer-events:none;opacity:.9}
-.corner svg{display:block}
+#bar{position:fixed;top:13px;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));z-index:31;transition:width .4s ease;box-shadow:0 0 12px var(--gold)}
 
 /* bloc tricolore (kicker) */
 .tri{display:inline-flex;flex-shrink:0}
@@ -71,7 +68,8 @@ body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opa
 
 /* kicker */
 .kick{display:inline-flex;align-items:center;gap:16px;margin-bottom:30px}
-.kick .n{font-family:var(--head);font-weight:700;font-size:clamp(13px,1.5vw,16px);letter-spacing:5px;text-transform:uppercase;color:var(--gold)}
+.kick .n{font-family:var(--head);font-weight:700;font-size:clamp(15px,1.9vw,21px);letter-spacing:4px;text-transform:uppercase;color:var(--gold)}
+.klogo{height:38px;width:auto;flex-shrink:0;filter:drop-shadow(0 2px 7px rgba(0,0,0,.55))}
 .kick .n b{color:var(--gold-bright)}
 
 /* headings XXL */
@@ -165,7 +163,7 @@ h2 .g{color:var(--gold)}
 .mission-big{font-family:var(--disp);font-size:clamp(28px,4.4vw,58px);letter-spacing:2px;color:var(--gold-bright);transform:skewX(-7deg);margin-top:30px;text-align:center;text-shadow:0 6px 30px rgba(0,0,0,.5)}
 
 /* ===== CHROME ===== */
-.topbar{position:fixed;top:9px;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 30px;pointer-events:none}
+.topbar{position:fixed;top:13px;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 30px;pointer-events:none}
 .topbar .brand{display:flex;align-items:center;gap:13px}
 .topbar .brand img{height:38px;width:auto}
 .topbar .brand b{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
@@ -215,11 +213,10 @@ h2 .g{color:var(--gold)}
 <body>
 <div class="topstrip"><i class="b"></i><i class="w"></i><i class="r"></i></div>
 <div id="bar"></div>
-<div class="corner"><svg width="150" height="150" viewBox="0 0 150 150"><g transform="rotate(45 75 75)"><rect x="40" y="-40" width="14" height="150" fill="#0A4DA8"/><rect x="56" y="-40" width="14" height="150" fill="#F5F5F5"/><rect x="72" y="-40" width="14" height="150" fill="#E62A34"/></g></svg></div>
 
 <div class="topbar">
   <div class="brand"><img src="gis-logo.png" alt="GIS"><b>Groupe Intervention Sécurité</b></div>
-  <div class="mm">Offre Particuliers · Nice</div>
+  <div class="mm"></div>
 </div>
 
 <div class="deck" id="deck">
@@ -233,29 +230,29 @@ h2 .g{color:var(--gold)}
       <div class="slogan stg">L'expérience des forces régaliennes<br><span class="g">au service de votre protection.</span></div>
       <div class="base stg">Corps d'élite opérationnel privé</div>
       <div class="stg" style="margin-top:22px"><span class="tband lg"><i class="b"></i><i class="w"></i><i class="r"></i></span></div>
-      <div class="aud stg">Offre Particuliers · Nice</div>
     </div>
   </section>
 
   <!-- 2. LE CONSTAT -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>01</b> · Le constat</span></div>
-      <div class="statement stg">Trop<br>d'agressions.</div>
-      <span class="tband stg mt"><i class="b"></i><i class="w"></i><i class="r"></i></span>
-      <p class="lead stg">Entre l'appel et l'arrivée des secours, <b>chaque minute compte</b>. GIS met une protection professionnelle à portée de main, pour vous et vos proches.</p>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>01</b> · Le constat</span></div>
+      <h2 class="stg">La sécurité en France<br>est <span class="g">très préoccupante.</span></h2>
+      <span class="tband stg" style="margin-top:24px"><i class="b"></i><i class="w"></i><i class="r"></i></span>
+      <p class="lead stg">Explosion des violences aux personnes. Diminution des effectifs dans les forces de l'ordre. Justice en manque de moyens humains et matériels. Le constat est sans appel.</p>
+      <p class="lead stg" style="margin-top:14px"><b>Nous sommes une nouvelle vision de la sécurité, au service de nos clients.</b></p>
     </div>
   </section>
 
   <!-- 3. LA MISSION -->
   <section class="slide glow">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>02</b> · La mission</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>02</b> · La mission</span></div>
       <h1 class="stg">Une protection<br>qui <span class="g">n'attend pas.</span></h1>
       <div class="plist">
-        <div class="pl stg"><span class="n">01</span><div><h3>Présence immédiate</h3><p>Des unités en ronde au cœur de la ville, prêtes à converger vers vous.</p></div></div>
-        <div class="pl stg"><span class="n">02</span><div><h3>Mobilité absolue</h3><p>La moto s'affranchit du trafic : l'intervention arrive là où une voiture ne passe plus.</p></div></div>
-        <div class="pl stg"><span class="n">03</span><div><h3>Dissuasion maîtrisée</h3><p>Des professionnels aguerris, tenue noire, moto noire : une présence qui calme la situation.</p></div></div>
+        <div class="pl stg"><span class="n">1</span><div><h3>Présence immédiate</h3><p>Des unités patrouillent au cœur de la ville, prêtes à vous assister à tout moment.</p></div></div>
+        <div class="pl stg"><span class="n">2</span><div><h3>Mobilité absolue</h3><p>La moto s'affranchit du trafic : elle arrive là où vous vous trouvez.</p></div></div>
+        <div class="pl stg"><span class="n">3</span><div><h3>Force tranquille</h3><p>Des professionnels aguerris : une force tranquille pour calmer la situation.</p></div></div>
       </div>
     </div>
   </section>
@@ -263,13 +260,13 @@ h2 .g{color:var(--gold)}
   <!-- 4. LE DISPOSITIF -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>03</b> · Le dispositif</span></div>
-      <h2 class="stg">Quatre temps. <span class="g">Une intervention.</span></h2>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>03</b> · Le dispositif</span></div>
+      <h2 class="stg">Une intervention. <span class="g">Quatre temps.</span></h2>
       <div class="igrid g4 stg">
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg><h3>01 · L'alerte</h3><p>Bouton SOS sur l'application ou réservation à l'avance.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>02 · Géolocalisation</h3><p>Votre position transmise en temps réel à l'unité la plus proche.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg><h3>03 · Déploiement</h3><p>Deux agents tracent vers vous sans subir le trafic.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>04 · Protection</h3><p>Protection rapprochée jusqu'à votre mise en sécurité.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg><h3>1 · L'alerte</h3><p>Bouton SOS sur l'application ou réservation à l'avance.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>2 · Géolocalisation</h3><p>Votre position transmise en temps réel à l'unité la plus proche.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg><h3>3 · Déploiement</h3><p>Les agents les plus proches vous rejoignent immédiatement, suivis par les autres unités disponibles.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>4 · Protection</h3><p>Protection rapprochée jusqu'à votre mise en sécurité.</p></div>
       </div>
     </div>
   </section>
@@ -278,7 +275,7 @@ h2 .g{color:var(--gold)}
   <section class="slide glow">
     <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>04</b> · Nos agents</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>04</b> · Nos agents</span></div>
       <h1 class="stg">Des experts des<br><span class="g">forces régaliennes.</span></h1>
       <span class="tband lg stg mt"><i class="b"></i><i class="w"></i><i class="r"></i></span>
       <p class="lead stg">Recrutés parmi les <b>professionnels des forces régaliennes</b> — police, gendarmerie, armée. Un recrutement d'exception, sans compromis.</p>
@@ -294,30 +291,30 @@ h2 .g{color:var(--gold)}
   <!-- 6. NOS VALEURS -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>05</b> · Nos valeurs</span></div>
-      <h2 class="stg">Droit <span class="g">dans les bottes.</span></h2>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>05</b> · Nos valeurs</span></div>
+      <h2 class="stg">Nos <span class="g">valeurs.</span></h2>
       <div class="chips stg">
-        <span class="chip">Rigueur</span><span class="chip">Professionnalisme</span><span class="chip">Loyauté</span>
-        <span class="chip">Précision</span><span class="chip">Maîtrise</span><span class="chip">Courage</span>
-        <span class="chip">Abnégation</span><span class="chip">Efficacité</span><span class="chip">Force</span>
-        <span class="chip">Honneur</span><span class="chip">Connaissance du terrain</span>
+        <span class="chip">Professionnalisme</span><span class="chip">Connaissance du terrain</span><span class="chip">Force</span>
+        <span class="chip">Rigueur</span><span class="chip">Maîtrise</span><span class="chip">Efficacité</span>
+        <span class="chip">Courage</span><span class="chip">Précision</span><span class="chip">Loyauté</span>
+        <span class="chip">Honneur</span>
       </div>
-      <div class="ethic stg">Être humain avant tout.<small>Nous ne faisons pas tout pour l'argent : la protection des personnes passe avant, et nos valeurs ne se négocient pas.</small></div>
+      <div class="ethic stg">L'humain avant tout.<small>La protection et le respect des gens avant tout. Nos valeurs ne se négocient pas.</small></div>
     </div>
   </section>
 
   <!-- 7. POUR VOUS -->
   <section class="slide glow">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>06</b> · Pour vous &amp; vos proches</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>06</b> · Pour vous &amp; vos proches</span></div>
       <h2 class="stg">Une protection <span class="g">sur-mesure.</span></h2>
       <div class="igrid g3 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="m4 11 8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-6h4v6"/></svg><h3>Domicile &amp; quartier</h3><p>Rondes et intervention à proximité de chez vous.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Trajets &amp; déplacements</h3><p>Accompagnement sur vos trajets sensibles.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="M12 8.5c-1.2-1.4-3.5-.8-3.5 1.2 0 1.6 2 3 3.5 4 1.5-1 3.5-2.4 3.5-4 0-2-2.3-2.6-3.5-1.2Z"/></svg><h3>Personnes exposées</h3><p>Accompagnement des personnes menacées ou vulnérables.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c0-3 2.4-5 5.5-5s5.5 2 5.5 5"/></svg><h3>Vos enfants — GIS Kids</h3><p>Bracelet connecté &amp; géolocalisation dédiés.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c0-3 2.4-5 5.5-5s5.5 2 5.5 5"/></svg><h3>Vos enfants — GIS Kids</h3><p>Bracelet connecté. Géolocalisation dédiée. Protection personnalisée.</p></div>
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/></svg><h3>Événements privés</h3><p>Soirées, réceptions, anniversaires : protection sur devis.</p></div>
-        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 9h16M5 9V5h14v4M6 9v11h12V9"/></svg><h3>Passages aux écoles</h3><p>Entre deux appels, nos unités sécurisent les abords des écoles.</p></div>
+        <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 9h16M5 9V5h14v4M6 9v11h12V9"/></svg><h3>Patrouille</h3><p>Entre chaque intervention, nos patrouilles sécurisent tous les clients abonnés.</p></div>
       </div>
     </div>
   </section>
@@ -325,12 +322,13 @@ h2 .g{color:var(--gold)}
   <!-- 8. GIS KIDS -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>07</b> · GIS Kids</span></div>
-      <h1 class="stg">La montre qui<br><span class="g">veille sur eux.</span></h1>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>07</b> · GIS Kids</span></div>
+      <h2 class="stg">La montre qui <span class="g">veille sur eux.</span></h2>
       <div class="plist">
-        <div class="pl stg"><span class="n">01</span><div><h3>Zone de sécurité &amp; alerte</h3><p>Zone de 100 m, alerte immédiate en cas de sortie de zone, géolocalisation en continu.</p></div></div>
-        <div class="pl stg"><span class="n">02</span><div><h3>L'application prend le relais</h3><p>Le bracelet déclenche l'alerte, l'équipe la plus proche est envoyée.</p></div></div>
-        <div class="pl stg"><span class="n">03</span><div><h3>Formation aux enfants… et aux parents</h3><p>Nous formons enfants et parents au bon usage du bracelet et aux bons réflexes.</p></div></div>
+        <div class="pl stg"><span class="n">1</span><div><h3>Zone de sécurité &amp; alerte</h3><p>Zone de 100 m, alerte immédiate en cas de sortie de zone, géolocalisation en continu.</p></div></div>
+        <div class="pl stg"><span class="n">2</span><div><h3>La montre en alerte</h3><p>Une fois activée : conversation bidirectionnelle, enregistrement de la situation, et signal visuel et sonore — elle clignote et sonne pour attirer l'attention.</p></div></div>
+        <div class="pl stg"><span class="n">3</span><div><h3>L'application prend le relais</h3><p>Le bracelet déclenche l'alerte, l'équipe la plus proche est envoyée.</p></div></div>
+        <div class="pl stg"><span class="n">4</span><div><h3>Formation aux enfants… et aux parents</h3><p>Nous formons enfants et parents au bon usage du bracelet et aux bons réflexes.</p></div></div>
       </div>
     </div>
   </section>
@@ -338,7 +336,7 @@ h2 .g{color:var(--gold)}
   <!-- 9. L'APPLICATION -->
   <section class="slide glow">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>08</b> · L'application</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>08</b> · L'application</span></div>
       <h2 class="stg">Un bouton. <span class="g">Le contrôle.</span></h2>
       <div class="igrid g4 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><h3>Bouton SOS</h3><p>Alerte immédiate d'un seul geste.</p></div>
@@ -352,7 +350,7 @@ h2 .g{color:var(--gold)}
   <!-- 10. L'ACADÉMIE -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>09</b> · L'académie GIS</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>09</b> · L'académie GIS</span></div>
       <h2 class="stg">Une formation <span class="g">d'exception.</span></h2>
       <p class="lead stg">Un centre de formation interne — <b>académie nationale</b> — qui entretient l'excellence de nos agents.</p>
       <div class="igrid g3 stg">
@@ -366,7 +364,7 @@ h2 .g{color:var(--gold)}
   <!-- 11. LE MATÉRIEL -->
   <section class="slide glow">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>10</b> · Le matériel</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>10</b> · Le matériel</span></div>
       <h2 class="stg">L'équipement <span class="g">d'un corps d'élite.</span></h2>
       <div class="igrid g4 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M5.5 17h6l4-7h3M11 10h4"/></svg><h3>BMW R 1250 GS</h3><p>Noir mat, équipées complètes.</p></div>
@@ -380,13 +378,13 @@ h2 .g{color:var(--gold)}
   <!-- 12. L'ORGANISATION -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>11</b> · L'organisation</span></div>
-      <h2 class="stg">Présents <span class="g">24h/24, 7j/7.</span></h2>
-      <div class="igrid g4 stg">
-        <div class="cell"><div class="num g">50</div><h3>Agents (objectif)</h3><p>Un effectif d'élite en montée en charge.</p></div>
-        <div class="cell"><div class="num g">2</div><h3>Équipes en rotation</h3><p>Jour 6h–20h &amp; nuit 20h–6h.</p></div>
-        <div class="cell"><div class="num g">10</div><h3>Motos en ronde</h3><p>+ 3 en repos : la relève est prête.</p></div>
-        <div class="cell"><div class="num g">24/7</div><h3>Couverture continue</h3><p>Jamais de rupture de protection.</p></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>11</b> · L'organisation</span></div>
+      <h2 class="stg">Une chaîne de protection <span class="g">en continu.</span></h2>
+      <span class="tband lg stg" style="margin-top:26px"><i class="b"></i><i class="w"></i><i class="r"></i></span>
+      <div class="chips stg" style="margin-top:34px">
+        <span class="chip hi">24h / 24</span>
+        <span class="chip hi">7j / 7</span>
+        <span class="chip hi">Partout où se trouvent nos clients</span>
       </div>
     </div>
   </section>
@@ -394,7 +392,7 @@ h2 .g{color:var(--gold)}
   <!-- 13. DÉPLOIEMENT NICE -->
   <section class="slide glow">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>12</b> · Le déploiement</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>12</b> · Le déploiement</span></div>
       <div class="cols narrow">
         <div>
           <h1 class="stg">Lancement<br><span class="g">à Nice.</span></h1>
@@ -418,7 +416,7 @@ h2 .g{color:var(--gold)}
   <!-- 14. QUESTIONS / RÉPONSES -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>13</b> · Vos questions, nos réponses</span></div>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>13</b> · Vos questions, nos réponses</span></div>
       <h2 class="stg">Un service <span class="g">encadré.</span></h2>
       <div class="igrid g3 stg">
         <div class="cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9.5 12 2 2 3.5-4"/></svg><h3>Autorisation CNAPS</h3><p>Service privé de sécurité, dans le respect strict du cadre légal.</p></div>
@@ -432,7 +430,7 @@ h2 .g{color:var(--gold)}
   <section class="slide glow">
     <div class="wm"><img src="gis-logo.png" alt=""></div>
     <div class="slide-inner cover">
-      <div class="kick stg" style="align-self:center"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>14</b> · L'offre</span></div>
+      <div class="kick stg" style="align-self:center"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>14</b> · L'offre</span></div>
       <div class="price stg">50<small>€ / h</small></div>
       <div class="price-note stg">Sans engagement · Réservation à l'avance possible</div>
       <p class="lead stg" style="text-align:center;margin-left:auto;margin-right:auto"><b>Devis sur-mesure</b> pour vos événements privés — soirées, réceptions, anniversaires.</p>
@@ -443,11 +441,11 @@ h2 .g{color:var(--gold)}
   <!-- 16. LE FONDATEUR -->
   <section class="slide dark2">
     <div class="slide-inner">
-      <div class="kick stg"><span class="tri blk"><i class="b"></i><i class="w"></i><i class="r"></i></span><span class="n"><b>15</b> · Le fondateur</span></div>
-      <blockquote class="quote stg">« J'ai passé <b>22 ans au sein de la police</b>. J'ai vu ce que devient une situation quand l'aide arrive trop tard. GIS existe pour une seule raison : que la protection arrive <b>à temps, à chaque fois</b>. »</blockquote>
+      <div class="kick stg"><img class="klogo" src="gis-logo.png" alt="GIS"><span class="n"><b>15</b> · Le fondateur</span></div>
+      <blockquote class="quote stg">« <b>27 ans</b> passés dans les forces de l'ordre. <b>22 ans</b> de service en Île-de-France. J'ai vu une multitude d'interventions où les secours sont arrivés trop tard. Nous avons fondé GIS avec une seule volonté : <b>tout faire pour que la protection arrive à temps, à chaque fois</b>. »</blockquote>
       <div class="sign stg">
         <span class="m">O</span>
-        <div><div class="nm">Olivier</div><div class="rl">Fondateur — 22 ans de service dans la police</div></div>
+        <div><div class="nm">Olivier</div><div class="rl">Fondateur — 27 ans dans les forces de l'ordre</div></div>
       </div>
     </div>
   </section>
